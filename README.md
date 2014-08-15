@@ -24,10 +24,11 @@ How to get this utility up and running:
 		 
 	Requires perl version > 5.010
 
-How to use 
+How to use
+
 	Usage: ./parseCifp.pl <options> <directory>
 		-v debug
-		-e expand coded text
+		-e expand coded text (not implemented yet)
 		-g create spatialite compatible geometry (not implemented yet)
 
 	

@@ -72,64 +72,64 @@ my %parameters = (
 
 my %sections = (
     'A' => {
-        'S' => 'MORA - Grid MORA '
+        'S' => 'MORA - Grid MORA'
     },
     'D' => {
-        ''  => 'Navaid - VHF Navaid ',
-        'B' => 'Navaid - NDB Navaid ',
+        ''  => 'Navaid - VHF Navaid',
+        'B' => 'Navaid - NDB Navaid',
     },
     'E' => {
-        'A' => 'Enroute - Grid Waypoints ',
-        'M' => 'Enroute - Airway Markers ',
-        'P' => 'Enroute - Holding Patterns ',
-        'R' => 'Enroute - Airways and Routes ',
-        'T' => 'Enroute - Preferred Routes ',
-        'U' => 'Enroute - Airway Restrictions ',
-        'V' => 'Enroute - Airway Restrictions ',
+        'A' => 'Enroute - Grid Waypoints',
+        'M' => 'Enroute - Airway Markers',
+        'P' => 'Enroute - Holding Patterns',
+        'R' => 'Enroute - Airways and Routes',
+        'T' => 'Enroute - Preferred Routes',
+        'U' => 'Enroute - Airway Restrictions',
+        'V' => 'Enroute - Airway Restrictions',
     },
     'H' => {
-        'A' => 'Heliport - Pads ',
-        'C' => 'Heliport - Terminal Waypoints ',
-        'D' => 'Heliport - SIDs ',
-        'E' => 'Heliport - STARs ',
-        'F' => 'Heliport - Approach Procedures ',
-        'K' => 'Heliport - TAA ',
-        'S' => 'Heliport - MSA ',
-        'V' => 'Heliport - Communications ',
+        'A' => 'Heliport - Pads',
+        'C' => 'Heliport - Terminal Waypoints',
+        'D' => 'Heliport - SIDs',
+        'E' => 'Heliport - STARs',
+        'F' => 'Heliport - Approach Procedures',
+        'K' => 'Heliport - TAA',
+        'S' => 'Heliport - MSA',
+        'V' => 'Heliport - Communications',
     },
     'P' => {
-        'A' => 'Airport - Reference Points ',
-        'B' => 'Airport - Gates ',
-        'C' => 'Airport - Terminal Waypoints ',
-        'D' => 'Airport - SIDs ',
-        'E' => 'Airport - STARs ',
-        'F' => 'Airport - Approach Procedures ',
-        'G' => 'Airport - Runways ',
-        'I' => 'Airport - Localizer/Glide Slope ',
-        'K' => 'Airport - TAA ',
-        'L' => 'Airport - MLS ',
-        'M' => 'Airport - Localizer Marker ',
-        'N' => 'Airport - Terminal NDB ',
-        'P' => 'Airport - Path Point ',
-        'R' => 'Airport - Flt Planning ARR/DEP ',
-        'S' => 'Airport - MSA ',
-        'T' => 'Airport - GLS Station ',
-        'V' => 'Airport - Communications ',
+        'A' => 'Airport - Reference Points',
+        'B' => 'Airport - Gates',
+        'C' => 'Airport - Terminal Waypoints',
+        'D' => 'Airport - SIDs',
+        'E' => 'Airport - STARs',
+        'F' => 'Airport - Approach Procedures',
+        'G' => 'Airport - Runways',
+        'I' => 'Airport - Localizer/Glide Slope',
+        'K' => 'Airport - TAA',
+        'L' => 'Airport - MLS',
+        'M' => 'Airport - Localizer Marker',
+        'N' => 'Airport - Terminal NDB',
+        'P' => 'Airport - Path Point',
+        'R' => 'Airport - Flt Planning ARR/DEP',
+        'S' => 'Airport - MSA',
+        'T' => 'Airport - GLS Station',
+        'V' => 'Airport - Communications',
     },
     'R' => {
-        ''  => 'Company Routes - Company Routes ',
+        ''  => 'Company Routes - Company Routes',
         'A' => 'Company Routes - Alternate Records',
 
     },
     'T' => {
-        'C' => 'Tables - Cruising Tables ',
-        'G' => 'Tables - Geographical Reference ',
-        'N' => 'Tables - RNAV Name Table ',
+        'C' => 'Tables - Cruising Tables',
+        'G' => 'Tables - Geographical Reference',
+        'N' => 'Tables - RNAV Name Table',
     },
     'U' => {
-        'C' => 'Airspace - Controlled Airspace ',
-        'F' => 'Airspace - FIR/UIR ',
-        'R' => 'Airspace - Restrictive Airspace ',
+        'C' => 'Airspace - Controlled Airspace',
+        'F' => 'Airspace - FIR/UIR',
+        'R' => 'Airspace - Restrictive Airspace',
     },
 );
 
@@ -1665,42 +1665,42 @@ my %hash_of_continuation_base_parsers = (
     'D' => {
 
         # '' => {
-        # '   ' => 'Navaid - VHF Navaid ',
+        # '   ' => 'Navaid - VHF Navaid',
         # },
 
         # 'B' => {
-        # 'XX' => 'Navaid - NDB Navaid ',
+        # 'XX' => 'Navaid - NDB Navaid',
     },
     'E' => {
 
-        # 'A' => 'Enroute - Grid Waypoints ',
-        # 'M' => 'Enroute - Airway Markers ',
-        # 'P' => 'Enroute - Holding Patterns ',
-        # 'R' => 'Enroute - Airways and Routes ',
-        # 'T' => 'Enroute - Preferred Routes ',
-        # 'U' => 'Enroute - Airway Restrictions ',
-        # 'V' => 'Enroute - Airway Restrictions ',
+        # 'A' => 'Enroute - Grid Waypoints',
+        # 'M' => 'Enroute - Airway Markers',
+        # 'P' => 'Enroute - Holding Patterns',
+        # 'R' => 'Enroute - Airways and Routes',
+        # 'T' => 'Enroute - Preferred Routes',
+        # 'U' => 'Enroute - Airway Restrictions',
+        # 'V' => 'Enroute - Airway Restrictions',
     },
     'H' => {
 
-        # 'A' => 'Heliport - Pads ',
-        # 'C' => 'Heliport - Terminal Waypoints ',
-        # 'D' => 'Heliport - SIDs ',
-        # 'E' => 'Heliport - STARs ',
-        # 'F' => 'Heliport - Approach Procedures ',
-        # 'K' => 'Heliport - TAA ',
-        # 'S' => 'Heliport - MSA ',
-        # 'V' => 'Heliport - Communications ',
+        # 'A' => 'Heliport - Pads',
+        # 'C' => 'Heliport - Terminal Waypoints',
+        # 'D' => 'Heliport - SIDs',
+        # 'E' => 'Heliport - STARs',
+        # 'F' => 'Heliport - Approach Procedures',
+        # 'K' => 'Heliport - TAA',
+        # 'S' => 'Heliport - MSA',
+        # 'V' => 'Heliport - Communications',
     },
 
     #Airport
     'P' => {
 
-        # 'A' => 'Airport - Reference Points ',
-        # 'B' => 'Airport - Gates ',
-        # 'C' => 'Airport - Terminal Waypoints ',
-        # 'D' => 'Airport - SIDs ',
-        # 'E' => 'Airport - STARs ',
+        # 'A' => 'Airport - Reference Points',
+        # 'B' => 'Airport - Gates',
+        # 'C' => 'Airport - Terminal Waypoints',
+        # 'D' => 'Airport - SIDs',
+        # 'E' => 'Airport - STARs',
         # Approach Procedures
         'F' => 'RecordType:1
                 CustomerAreaCode:3
@@ -1724,12 +1724,12 @@ my %hash_of_continuation_base_parsers = (
                 '
         ,
 
-        # 'G' => 'Airport - Runways ',
-        # 'I' => 'Airport - Localizer/Glide Slope ',
-        # 'K' => 'Airport - TAA ',
-        # 'L' => 'Airport - MLS ',
-        # 'M' => 'Airport - Localizer Marker ',
-        # 'N' => 'Airport - Terminal NDB ',
+        # 'G' => 'Airport - Runways',
+        # 'I' => 'Airport - Localizer/Glide Slope',
+        # 'K' => 'Airport - TAA',
+        # 'L' => 'Airport - MLS',
+        # 'M' => 'Airport - Localizer Marker',
+        # 'N' => 'Airport - Terminal NDB',
         'P' => 'RecordType:1
                 CustomerAreaCode:3
                 SectionCode:1
@@ -1746,27 +1746,27 @@ my %hash_of_continuation_base_parsers = (
                 '
         ,
 
-        # 'R' => 'Airport - Flt Planning ARR/DEP ',
-        # 'S' => 'Airport - MSA ',
-        # 'T' => 'Airport - GLS Station ',
-        # 'V' => 'Airport - Communications ',
+        # 'R' => 'Airport - Flt Planning ARR/DEP',
+        # 'S' => 'Airport - MSA',
+        # 'T' => 'Airport - GLS Station',
+        # 'V' => 'Airport - Communications',
     },
     'R' => {
 
-        # ''  => 'Company Routes - Company Routes ',
+        # ''  => 'Company Routes - Company Routes',
         # 'A' => 'Company Routes - Alternate Records',
 
     },
     'T' => {
 
-        # 'C' => 'Tables - Cruising Tables ',
-        # 'G' => 'Tables - Geographical Reference ',
-        # 'N' => 'Tables - RNAV Name Table ',
+        # 'C' => 'Tables - Cruising Tables',
+        # 'G' => 'Tables - Geographical Reference',
+        # 'N' => 'Tables - RNAV Name Table',
     },
     'U' => {
 
-        # 'C' => 'Airspace - Controlled Airspace ',
-        # 'F' => 'Airspace - FIR/UIR ',
+        # 'C' => 'Airspace - Controlled Airspace',
+        # 'F' => 'Airspace - FIR/UIR',
         'R' => 'RecordType:1
             CustomerAreaCode:3
             SectionCode:1
@@ -1805,42 +1805,42 @@ my %hash_of_continuation_application_parsers = (
     # 'D' => {
 
     # # '' => {
-    # # '   ' => 'Navaid - VHF Navaid ',
+    # # '   ' => 'Navaid - VHF Navaid',
     # # },
 
     # # 'B' => {
-    # # 'XX' => 'Navaid - NDB Navaid ',
+    # # 'XX' => 'Navaid - NDB Navaid',
     # },
     # 'E' => {
 
-    # # 'A' => 'Enroute - Grid Waypoints ',
-    # # 'M' => 'Enroute - Airway Markers ',
-    # # 'P' => 'Enroute - Holding Patterns ',
-    # # 'R' => 'Enroute - Airways and Routes ',
-    # # 'T' => 'Enroute - Preferred Routes ',
-    # # 'U' => 'Enroute - Airway Restrictions ',
-    # # 'V' => 'Enroute - Airway Restrictions ',
+    # # 'A' => 'Enroute - Grid Waypoints',
+    # # 'M' => 'Enroute - Airway Markers',
+    # # 'P' => 'Enroute - Holding Patterns',
+    # # 'R' => 'Enroute - Airways and Routes',
+    # # 'T' => 'Enroute - Preferred Routes',
+    # # 'U' => 'Enroute - Airway Restrictions',
+    # # 'V' => 'Enroute - Airway Restrictions',
     # },
     # 'H' => {
 
-    # # 'A' => 'Heliport - Pads ',
-    # # 'C' => 'Heliport - Terminal Waypoints ',
-    # # 'D' => 'Heliport - SIDs ',
-    # # 'E' => 'Heliport - STARs ',
-    # # 'F' => 'Heliport - Approach Procedures ',
-    # # 'K' => 'Heliport - TAA ',
-    # # 'S' => 'Heliport - MSA ',
-    # # 'V' => 'Heliport - Communications ',
+    # # 'A' => 'Heliport - Pads',
+    # # 'C' => 'Heliport - Terminal Waypoints',
+    # # 'D' => 'Heliport - SIDs',
+    # # 'E' => 'Heliport - STARs',
+    # # 'F' => 'Heliport - Approach Procedures',
+    # # 'K' => 'Heliport - TAA',
+    # # 'S' => 'Heliport - MSA',
+    # # 'V' => 'Heliport - Communications',
     # },
 
     #Airport
     'P' => {
 
-        # 'A' => 'Airport - Reference Points ',
-        # 'B' => 'Airport - Gates ',
-        # 'C' => 'Airport - Terminal Waypoints ',
-        # 'D' => 'Airport - SIDs ',
-        # 'E' => 'Airport - STARs ',
+        # 'A' => 'Airport - Reference Points',
+        # 'B' => 'Airport - Gates',
+        # 'C' => 'Airport - Terminal Waypoints',
+        # 'D' => 'Airport - SIDs',
+        # 'E' => 'Airport - STARs',
         # Approach Procedures
         'F' => {
 
@@ -1891,12 +1891,12 @@ my %hash_of_continuation_application_parsers = (
                 ',
         },
 
-        # 'G' => 'Airport - Runways ',
-        # 'I' => 'Airport - Localizer/Glide Slope ',
-        # 'K' => 'Airport - TAA ',
-        # 'L' => 'Airport - MLS ',
-        # 'M' => 'Airport - Localizer Marker ',
-        # 'N' => 'Airport - Terminal NDB ',
+        # 'G' => 'Airport - Runways',
+        # 'I' => 'Airport - Localizer/Glide Slope',
+        # 'K' => 'Airport - TAA',
+        # 'L' => 'Airport - MLS',
+        # 'M' => 'Airport - Localizer Marker',
+        # 'N' => 'Airport - Terminal NDB',
         'P' => {
             'E' => 'RecordType:1
             CustomerAreaCode:3
@@ -1923,28 +1923,28 @@ my %hash_of_continuation_application_parsers = (
             ',
         },
 
-        # 'R' => 'Airport - Flt Planning ARR/DEP ',
-        # 'S' => 'Airport - MSA ',
-        # 'T' => 'Airport - GLS Station ',
-        # 'V' => 'Airport - Communications ',
+        # 'R' => 'Airport - Flt Planning ARR/DEP',
+        # 'S' => 'Airport - MSA',
+        # 'T' => 'Airport - GLS Station',
+        # 'V' => 'Airport - Communications',
     },
 
     # 'R' => {
 
-    # # ''  => 'Company Routes - Company Routes ',
+    # # ''  => 'Company Routes - Company Routes',
     # # 'A' => 'Company Routes - Alternate Records',
 
     # },
     # 'T' => {
 
-    # # 'C' => 'Tables - Cruising Tables ',
-    # # 'G' => 'Tables - Geographical Reference ',
-    # # 'N' => 'Tables - RNAV Name Table ',
+    # # 'C' => 'Tables - Cruising Tables',
+    # # 'G' => 'Tables - Geographical Reference',
+    # # 'N' => 'Tables - RNAV Name Table',
     # },
     'U' => {
 
-        # 'C' => 'Airspace - Controlled Airspace ',
-        # 'F' => 'Airspace - FIR/UIR ',
+        # 'C' => 'Airspace - Controlled Airspace',
+        # 'F' => 'Airspace - FIR/UIR',
         'R' => {
             'C' => 'RecordType:1
         CustomerAreaCode:3
@@ -2251,7 +2251,8 @@ while (<$file>) {
             #Mark what we found
             $continuationAndApplicationTypes{$SectionCode}{$SubSectionCode}
               {$application} = 1;
-            say "{$SectionCode}{$SubSectionCode}{$application}";
+              
+#             say "{$SectionCode}{$SubSectionCode}{$application}";
 
             #Is there an application specific parser for this?
             if ( $hash_of_continuation_application_parsers{$SectionCode}

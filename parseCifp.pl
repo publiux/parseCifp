@@ -31,12 +31,12 @@ use DBI;
 
 use vars qw/ %opt /;
 
-my $opt_string = 've';
+my $opt_string = 'vec:';
 
 my $arg_num = scalar @ARGV;
 
 unless ( getopts( "$opt_string", \%opt ) ) {
-    say "Usage: $0 -v -e <data directory>\n";
+    say "Usage: $0 -v -e -c<cycle> <data directory>\n";
     say "-v: enable debug output";
     say "-e: expand text";
     exit(1);
@@ -51,15 +51,19 @@ if ( $arg_num < 1 ) {
 #Get the target data directory from command line options
 my $targetdir = $ARGV[0];
 
+#Other command line parameters
+my $debug  = $opt{v};
+my $shouldExpand = $opt{e};
+my $cycle = $opt{c};
+
 #Open appropriate data file in the target directory
 my ( $filename, $dir, $ext ) = fileparse( $targetdir, qr/\.[^.]*/ );
-my $datafile = "$dir" . "FAACIFP18";
+my $datafile = "$dir" . "FAACIFP18" . "-$cycle";
 
 my $file;
 open $file, '<', $datafile or die $!;
 
-my $debug  = $opt{v};
-my $expand = $opt{e};
+
 
 #Hash to hold whether we have already created table for this file and recordType
 my %haveCreatedTable = ();
@@ -2009,11 +2013,11 @@ my $parser_airportheliport = Parse::FixedLength->new(
 );
 
 #connect to the database
-my $dbfile = "./cifp.db";
+my $dbfile = "./cifp-$cycle.db";
 my $dbh = DBI->connect( "dbi:SQLite:dbname=$dbfile", "", "" );
 
 #Set some parameters to speed INSERTs up at the expense of safety
-$dbh->do("PRAGMA page_size=4096");
+# $dbh->do("PRAGMA page_size=4096");
 $dbh->do("PRAGMA synchronous=OFF");
 
 #Create base tables (obviously just for Android)

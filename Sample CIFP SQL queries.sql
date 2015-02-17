@@ -1,14 +1,16 @@
----Minimum Safe Altitudes at an airport
+---Minimum Safe Altitudes at an airport\
+.headers on
 select
   *
 from 
-        "primary_P_S_base_Airport - MSA" as msa
+  "primary_P_S_base_Airport - MSA" as msa
 WHERE 
-        --msa.AirportIdentifier like '%RIC%'
-        msa.AirportIdentifier IN ('KOFP','KRIC','KFCI','KSFO')
-       ;
+  --msa.AirportIdentifier like '%RIC%'
+  msa.AirportIdentifier IN ('KOFP')
+  ;
 ------------------------------------------------------------------
 --SIDs at an airport
+explain query plan
 select distinct
   sids.AirportIdentifier
   ,sids.SIDSTARApproachIdentifier
@@ -17,9 +19,9 @@ from
         "primary_P_D_base_Airport - SIDs" as sids
 
 WHERE 
-        sids.AirportIdentifier like '%RIC%' 
+        sids.AirportIdentifier = 'KRIC' 
        ;
-       
+------------------------------------------------------------------
 --STARs at an airport
 select distinct
   stars.AirportIdentifier
@@ -31,7 +33,7 @@ from
 WHERE 
         stars.AirportIdentifier like '%RIC%' 
         ;
-        
+------------------------------------------------------------------        
 --IAPs (all steps) at an airport
 select *
   --iap.AirportIdentifier
@@ -41,9 +43,11 @@ from
         "primary_P_F_base_Airport - Approach Procedures" as IAP
 
 WHERE 
-        iap.AirportIdentifier like '%SFO%' 
+        iap.AirportIdentifier like '%OFP%' 
         ;
---IAPs  at an airport
+
+------------------------------------------------------------------
+--IAPs at an airport
 select distinct
   iap.AirportIdentifier
   ,iap.SIDSTARApproachIdentifier
@@ -52,26 +56,10 @@ from
         "primary_P_F_base_Airport - Approach Procedures" as IAP
 
 WHERE 
-        iap.AirportIdentifier like '%OFP%' 
+        iap.AirportIdentifier like '%RIC%' 
         ;
-        
---NDB Navaids used for IAPs for an airport
-select distinct
-        iap.FixIdentifier	
-	,NDB.NDBLatitude
-	,NDB.NDBLongitude
-from 
-        "primary_P_F_base_Airport - Approach Procedures" as IAP
 
-JOIN
-	"primary_D_B_base_Navaid - NDB Navaid" as NDB
-
-ON 
-	iap.FixIdentifier = ndb.NDBIdentifier
-
-WHERE 
-        airportidentifier like '%RIC%' ;
-
+------------------------------------------------------------------
 --Runways at an airport
 select distinct
 	rwy.AirportICAOIdentifier
@@ -82,8 +70,19 @@ from
         "primary_P_G_base_Airport - Runways" as RWY
 
 WHERE 
-        rwy.AirportICAOIdentifier like '%HUA%' ;
-        
+        rwy.AirportICAOIdentifier like '%RIC%' ;
+------------------------------------------------------------------        
+--Longest runway's length at an airport (in hundreds of feet.  eg 090 = 9000')
+select distinct
+	rwy.AirportICAOIdentifier
+	,rwy.LongestRunway
+ 
+from 
+        "primary_P_A_base_Airport - Reference Points" as RWY
+
+WHERE 
+        rwy.AirportICAOIdentifier in ('KRIC', 'KDCA', 'KIAD', 'KORF') ;
+-------------------------------------------------------------------
 --NDB Navaids used for IAPs for an airport
 select distinct
         iap.FixIdentifier	
@@ -100,9 +99,7 @@ ON
 
 WHERE 
         airportidentifier like '%RIC%' ;
-
-
----------------------------------
+------------------------------------------------------------------
 --VHF Navaids used for IAPs for an airport
 select distinct
         iap.FixIdentifier	
@@ -119,7 +116,7 @@ ON
 
 WHERE 
         airportidentifier like '%RIC%' ;
------------------------------------
+------------------------------------------------------------------
 --Fixes used for IAPs for an airport
 select distinct
         iap.FixIdentifier	
@@ -136,7 +133,7 @@ ON
 
 WHERE 
         airportidentifier like '%RIC%' ;
------------------------------------
+------------------------------------------------------------------
 --Terminal waypoints used for IAPs for an airport
 select distinct
         iap.FixIdentifier	
@@ -155,7 +152,7 @@ WHERE
         airportidentifier like '%RIC%' ;
 
 
------------------------------------
+------------------------------------------------------------------
 --Terminal waypoints used for IAPs for a heliport
 select distinct
         iap.FixIdentifier	
@@ -172,9 +169,7 @@ ON
 
 WHERE 
         HeliportIdentifier like '%RIC%' ;
-
-
------------------------------------
+------------------------------------------------------------------
 select 
 	--_id
         --,AirportIdentifier
@@ -217,15 +212,10 @@ WHERE
 	heliportidentifier like '%02p%' 
 ORDER BY 
         SidstarApproachIdentifier,TransitionIdentifier,SequenceNumber;
------------
+------------------------------------------------------------------
 select 
-
         *	
-
-
 from 
-
 	"primary_H_F_base_Heliport - Approach Procedures"
-WHERE 
-
+WHERE
 	heliportidentifier like '%02P%' ;

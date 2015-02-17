@@ -54,10 +54,10 @@ my $cycle = $opt{c};
 
 #Open appropriate data file in the target directory
 my ( $filename, $dir, $ext ) = fileparse( $targetdir, qr/\.[^.]*/ );
-my $datafile = "$dir" . "FAACIFP18" . "-$cycle";
+my $datafile = "$dir" . "FAACIFP18" ;# . "-$cycle";
 
 my $file;
-open $file, '<', $datafile or die $!;
+open $file, '<', $datafile or die "cannot open $datafile: $!";
 
 
 

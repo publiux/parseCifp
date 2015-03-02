@@ -25,7 +25,17 @@ How to get this utility up and running:
 	Requires perl version > 5.010
 
 How to use
+	Unzip the CIFP archive to ./CIFP_YYYYMM (name depends on cycle)
+	    Make sure the "FAACIFP18" file is in this directory
+	    
+	Edit parseCifp.sh
+	    Update the cycle information
+	    
+	./parseCifp.sh
+	   
 
+	
+	
 	Usage: ./parseCifp.pl <options> <directory>
 		-v debug
 		-e expand coded text (not implemented yet)

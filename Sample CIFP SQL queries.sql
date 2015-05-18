@@ -149,7 +149,7 @@ ON
 	iap.FixIdentifier = fix.waypointIdentifier
 
 WHERE 
-        airportidentifier like '%RIC%' ;
+        airportidentifier like '%OFP%' ;
 
 
 ------------------------------------------------------------------

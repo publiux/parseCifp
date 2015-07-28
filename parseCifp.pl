@@ -120,7 +120,7 @@ my $parser_airportheliport = Parse::FixedLength->new(
     ]
 );
 
-#connect to the database
+#create/connect to the database
 my $dbfile = "./cifp-$cycle.db";
 my $dbh = DBI->connect( "dbi:SQLite:dbname=$dbfile", "", "" );
 
@@ -568,7 +568,7 @@ sub coordinateToDecimalCifpFormat {
     return ($signedDegrees);
 }
 sub usage{
-    say "Usage: $0 -v -e -c<cycle> <data directory>\n";
+    say "Usage: $0 -v -e -c<cycle> <directory containing FAACIFP18>\n";
     say "-v: enable debug output";
     say "-e: expand text";
     return;

@@ -1,4 +1,4 @@
--- sqlite3 cifp-1510.db
+-- sqlite3 cifp-1513.db
 
 .headers on
 
@@ -43,11 +43,13 @@ select *
   --,iap.SIDSTARApproachIdentifier
   
 from 
-        "primary_P_F_base_Airport - Approach Procedures" as IAP
+    "primary_P_F_base_Airport - Approach Procedures" as IAP
 
 WHERE 
-        iap.AirportIdentifier like '%OFP%' 
-        ;
+    iap.AirportIdentifier like '%TVL%'
+        and
+    iap.SIDSTARApproachIdentifier like '%18%'
+    ;
 
 ------------------------------------------------------------------
 --IAPs at an airport
@@ -59,7 +61,7 @@ from
         "primary_P_F_base_Airport - Approach Procedures" as IAP
 
 WHERE 
-        iap.AirportIdentifier like '%RIC%' 
+        iap.AirportIdentifier like '%RIC%'
         ;
 
 ------------------------------------------------------------------

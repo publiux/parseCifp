@@ -19,17 +19,19 @@
 use 5.010;
 use strict;
 use warnings;
-
-# use processFaaData;
-
 use File::Basename;
 use Getopt::Std;
-use Parse::FixedLength;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
-use DBI;
-
 use vars qw/ %opt /;
+
+#Allow use of locally installed libraries in conjunction with Carton
+use FindBin '$Bin';
+use lib "$FindBin::Bin/local/lib/perl5";
+
+#Non-standard libaries
+use DBI;
+use Parse::FixedLength;
 
 my $opt_string = 'vec:';
 

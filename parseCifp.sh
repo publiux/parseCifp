@@ -5,6 +5,7 @@ IFS=$(printf '\n\t')  # Always put this in Bourne shell scripts
 #Check count of command line parameters
 if [ "$#" -ne 1 ] ; then
   echo "Usage: $0 cycle" >&2
+  echo "eg. $0 1511"
   exit 1
 fi
 

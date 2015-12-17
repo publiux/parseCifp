@@ -1,5 +1,8 @@
----Minimum Safe Altitudes at an airport\
+-- sqlite3 cifp-1510.db
+
 .headers on
+
+---Minimum Safe Altitudes at an airport
 select
   *
 from 

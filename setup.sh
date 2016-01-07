@@ -8,7 +8,6 @@ sudo apt-get install \
                     perltidy \
                     cpanminus \
                     Carton \
-                    gdal-bin
 
 
 #Install the libraries in our cpanfile locally

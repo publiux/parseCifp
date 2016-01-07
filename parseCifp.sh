@@ -19,9 +19,7 @@ datadir=./CIFP_20$cycle/
 outputdir=.
 
 #delete any existing files
-set +e
-rm $outputdir/cifp-$cycle.db
-set -e
+rm -f $outputdir/cifp-$cycle.db
 
 echo "Creating the database"
 #create the new sqlite database

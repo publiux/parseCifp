@@ -50,18 +50,16 @@ if ( $arg_num < 1 ) {
 my $targetdir = $ARGV[0];
 
 #Other command line parameters
-my $debug  = $opt{v};
+my $debug        = $opt{v};
 my $shouldExpand = $opt{e};
-my $cycle = $opt{c};
+my $cycle        = $opt{c};
 
 #Open appropriate data file in the target directory
 my ( $filename, $dir, $ext ) = fileparse( $targetdir, qr/\.[^.]*/ );
-my $datafile = "$dir" . "FAACIFP18" ;# . "-$cycle";
+my $datafile = "$dir" . "FAACIFP18";    # . "-$cycle";
 
 my $file;
 open $file, '<', $datafile or die "cannot open $datafile: $!";
-
-
 
 #Hash to hold whether we have already created table for this file and recordType
 my %haveCreatedTable = ();
@@ -86,8 +84,8 @@ my %hash_of_continuation_base_parsers = do 'continuation_base_parsers.pl';
 
 #Load the hash defintion from an external file
 #Use these continuation parsers for SectionCode/SubsectionCodes that have application types
-my %hash_of_continuation_application_parsers  = do 'continuation_application_parsers.pl';
-
+my %hash_of_continuation_application_parsers =
+  do 'continuation_application_parsers.pl';
 
 #A hash to record SectionCode/SubsectionCode/ApplicationType that we've encountered
 my %continuationAndApplicationTypes = ();
@@ -151,23 +149,23 @@ while (<$file>) {
     $textOfCurrentLine =~ s/\R//g;
 
     #Check for mismatch between expected and actual lengths
-    die "Line # $currentLineNumber - Bad parse. Expected "
-      . $parser_base->length
-      . " characters but read "
-      . length($textOfCurrentLine) . "\n"
-      unless $parser_base->length == length($textOfCurrentLine);
+    if ( $parser_base->length != length($textOfCurrentLine) ) {
+        die "Line # $currentLineNumber - Bad parse. Expected "
+          . $parser_base->length
+          . " characters but read "
+          . length($textOfCurrentLine) . "\n";
+    }
 
-    # say $currentLineNumber;
     # print "\rLoading # $currentLineNumber...";
     say "Loading # $currentLineNumber..." if ( $currentLineNumber % 1000 == 0 );
 
     #Start parsing the record
-    my $data = $parser_base->parse_newref($textOfCurrentLine);
+    my $parser_ref = $parser_base->parse_newref($textOfCurrentLine);
 
-    my $RecordType       = $data->{RecordType};
-    my $SectionCode      = $data->{SectionCode};
-    my $SubSectionCode   = $data->{SubSectionCode};
-    my $CustomerAreaCode = $data->{CustomerAreaCode};
+    my $RecordType       = $parser_ref->{RecordType};
+    my $SectionCode      = $parser_ref->{SectionCode};
+    my $SubSectionCode   = $parser_ref->{SubSectionCode};
+    my $CustomerAreaCode = $parser_ref->{CustomerAreaCode};
 
     #Ignore header records
     if ( $RecordType eq 'H' ) {
@@ -184,24 +182,24 @@ while (<$file>) {
         next;
     }
 
-    #Is this an airport or heliport record?
-    if ( $SectionCode =~ m/[PH]/i ) {
-
+    #Is this an airport or heliport record with a blank subsection?
+    if ( ( $SectionCode =~ m/[PH]/i ) && ( !$SubSectionCode ) ) {
         #If yes,  subsection codes are in a different place in airport and heliport records
         #Reparse and reset the variables
-        $data = $parser_airportheliport->parse_newref($textOfCurrentLine);
+        $parser_ref = $parser_airportheliport->parse_newref($textOfCurrentLine);
 
         #Check for mismatch between expected and actual lengths
-        die "Line # $currentLineNumber - Bad parse. Expected "
-          . $parser_airportheliport->length
-          . " characters but read "
-          . length($textOfCurrentLine) . "\n"
-          unless $parser_airportheliport->length == length($textOfCurrentLine);
+        if ( $parser_airportheliport->length != length($textOfCurrentLine) ) {
+            die "Line # $currentLineNumber - Bad parse. Expected "
+              . $parser_airportheliport->length
+              . " characters but read "
+              . length($textOfCurrentLine) . "\n";
+        }
 
-        $RecordType       = $data->{RecordType};
-        $SectionCode      = $data->{SectionCode};
-        $SubSectionCode   = $data->{SubSectionCode};
-        $CustomerAreaCode = $data->{CustomerAreaCode};
+        $RecordType       = $parser_ref->{RecordType};
+        $SectionCode      = $parser_ref->{SectionCode};
+        $SubSectionCode   = $parser_ref->{SubSectionCode};
+        $CustomerAreaCode = $parser_ref->{CustomerAreaCode};
     }
 
     #Is there a parse format for this section/subsection?
@@ -214,7 +212,8 @@ while (<$file>) {
         next;
     }
 
-    #Create an array to feed to Parse::FixedLength from the parser format we looked up in the hash_of_parsers
+    #Create an array to feed to Parse::FixedLength from the parser format we
+    #looked up in the hash_of_parsers
     my @parserArray =
       split( ' ', $hash_of_parsers{$SectionCode}{$SubSectionCode} );
 
@@ -226,11 +225,12 @@ while (<$file>) {
     die "Bad length on parser_specific" if ( $parser_specific->length != 132 );
 
     #Check for mismatch between expected and actual lengths
-    die "Line # $currentLineNumber - Bad parse. Expected "
-      . $parser_specific->length
-      . " characters but read "
-      . length($textOfCurrentLine) . "\n"
-      unless $parser_specific->length == length($textOfCurrentLine);
+    if ( $parser_specific->length != length($textOfCurrentLine) ) {
+        die "Line # $currentLineNumber - Bad parse. Expected "
+          . $parser_specific->length
+          . " characters but read "
+          . length($textOfCurrentLine) . "\n";
+    }
 
     # #Say what line of the source file we're working with and what section/subsection it is
     # say "Line # $. :"
@@ -238,21 +238,21 @@ while (<$file>) {
     # . "$SectionCode$SubSectionCode";    #
 
     #Parse again with a more specific parser
-    my $data2 = $parser_specific->parse_newref($textOfCurrentLine);
+    my $parser2_ref = $parser_specific->parse_newref($textOfCurrentLine);
 
     #------------------------------------------------
     # #This is temporary code to process and print out AS - MORA records
     # if ( $SectionCode eq "A" && $SubSectionCode eq "S" ) {
     # # say $textOfCurrentLine;
-    # my $startingLatitude  = $data2->{StartingLatitude};
-    # my $startingLongitude = $data2->{StartingLongitude};
+    # my $startingLatitude  = $parser2_ref->{StartingLatitude};
+    # my $startingLongitude = $parser2_ref->{StartingLongitude};
 
     # # say "startingLatitude: $startingLatitude, startingLongitude: $startingLongitude";
     # for ( my $i = 1 ; $i <= 30 ; $i++ ) {
 
-    # my $mora = $data2->{ "MORA_" . $i };
+    # my $mora = $parser2_ref->{ "MORA_" . $i };
 
-    # # say "MORA: " . $data2->{"MORA_" . $i};
+    # # say "MORA: " . $parser2_ref->{"MORA_" . $i}
     # my $iZeroBased = sprintf( "%02d", $i - 1 );
 
     # my $currentLatitude  = $startingLatitude . "000000";
@@ -266,7 +266,7 @@ while (<$file>) {
     # say "$currentLongitudeDecimal, $currentLatitudeDecimal, $mora";
     # }
 
-    # # print Dumper($data2);
+    # # print Dumper($parser2_ref);
     # }
     #------------------------------------------------
     # #This is temporary code to print out runway records
@@ -274,10 +274,10 @@ while (<$file>) {
     # #Have we already printed out the .csv header?
     # if ( $havePrintedKeys == 0 ) {
     # #Create these two keys for data we'll create in next step
-    # $data2->{LatitudeDecimal}  = "";
-    # $data2->{LongitudeDecimal} = "";
+    # $parser2_ref->{LatitudeDecimal}  = "";
+    # $parser2_ref->{LongitudeDecimal} = "";
     # #Print the CSV header
-    # foreach my $key ( sort keys $data2 ) {
+    # foreach my $key ( sort keys $parser2_ref ) {
     # print $key . ",";
     # }
     # say "";
@@ -285,14 +285,14 @@ while (<$file>) {
     # }
     # E15028000000
     # #Calculate the decimal equivalents for given lat/lon values and add to hash
-    # $data2->{LatitudeDecimal} =
-    # coordinateToDecimalCifpFormat( $data2->{RunwayLatitude} );
-    # $data2->{LongitudeDecimal} =
-    # coordinateToDecimalCifpFormat( $data2->{RunwayLongitude} );
+    # $parser2_ref->{LatitudeDecimal} =
+    # coordinateToDecimalCifpFormat( $parser2_ref->{RunwayLatitude} );
+    # $parser2_ref->{LongitudeDecimal} =
+    # coordinateToDecimalCifpFormat( $parser2_ref->{RunwayLongitude} );
 
     # #Print the values of each hash key, sorted so they correspond with headers printed earlier
-    # foreach my $key ( sort keys $data2 ) {
-    # print $data2->{$key} . ",";
+    # foreach my $key ( sort keys $parser2_ref ) {
+    # print $parser2_ref->{$key} . ",";
     # }
     # say "";
     # }
@@ -300,7 +300,7 @@ while (<$file>) {
     #Work with continuation records
 
     #This is meant to check that records that should have {ContinuationRecordNumber} defined actually do.
-    if ( not defined $data2->{ContinuationRecordNumber} ) {
+    if ( not defined $parser2_ref->{ContinuationRecordNumber} ) {
         say "No continuation number for this record";
         say
           "$datafile line # $. : SectionCode:$SectionCode and SubSectionCode:$SubSectionCode---";
@@ -309,18 +309,18 @@ while (<$file>) {
     }
 
     #Is the next record a continuation record?
-    elsif ( $data2->{ContinuationRecordNumber} eq '1' ) {
+    elsif ( $parser2_ref->{ContinuationRecordNumber} eq '1' ) {
 
         # if ($debug) {
         # say "Next record is a continuation record";
-        # # print Dumper($data2);
+        # # print Dumper($parser2_ref);
         # say $textOfCurrentLine;
         # }
     }
 
     #Is this record a continuation record?  If ContinuationRecordNumber > 1 (goes into A..Z too) then it is)
-    elsif (( $data2->{ContinuationRecordNumber} ne '0' )
-        && ( $data2->{ContinuationRecordNumber} ne '1' ) )
+    elsif (( $parser2_ref->{ContinuationRecordNumber} ne '0' )
+        && ( $parser2_ref->{ContinuationRecordNumber} ne '1' ) )
     {
         # say "This record is a continuation record for $SectionCode-$SubSectionCode";
         # say "$textOfCurrentLine";
@@ -342,15 +342,17 @@ while (<$file>) {
               Parse::FixedLength->new( [@parserArray], \%parameters );
 
             #Check for mismatch between expected and actual lengths
-            die "Line # $currentLineNumber - Bad parse. Expected "
-              . $parser_continuation_base->length
-              . " characters but read "
-              . length($textOfCurrentLine) . "\n"
-              unless $parser_continuation_base->length ==
-              length($textOfCurrentLine);
+            if ( $parser_continuation_base->length !=
+                length($textOfCurrentLine) )
+            {
+                die "Line # $currentLineNumber - Bad parse. Expected "
+                  . $parser_continuation_base->length
+                  . " characters but read "
+                  . length($textOfCurrentLine) . "\n";
+            }
 
             #Parse the line with the base parser
-            $data2 =
+            $parser2_ref =
               $parser_continuation_base->parse_newref($textOfCurrentLine);
 
             # say "This record is a continuation record";
@@ -358,13 +360,13 @@ while (<$file>) {
             # "$datafile line # $. : SectionCode:$SectionCode and SubSectionCode:$SubSectionCode---";
 
             #Pull out the application type
-            $application = $data2->{ApplicationType};
+            $application = $parser2_ref->{ApplicationType};
 
             #Mark what we found
             $continuationAndApplicationTypes{$SectionCode}{$SubSectionCode}
               {$application} = 1;
-              
-#             say "{$SectionCode}{$SubSectionCode}{$application}";
+
+            #             say "{$SectionCode}{$SubSectionCode}{$application}";
 
             #Is there an application specific parser for this?
             if ( $hash_of_continuation_application_parsers{$SectionCode}
@@ -380,15 +382,17 @@ while (<$file>) {
                   Parse::FixedLength->new( [@parserArray], \%parameters );
 
                 #Check for mismatch between expected and actual lengths
-                die "Line # $currentLineNumber - Bad parse. Expected "
-                  . $parser_continuation_application->length
-                  . " characters but read "
-                  . length($textOfCurrentLine) . "\n"
-                  unless $parser_continuation_application->length ==
-                  length($textOfCurrentLine);
+                if ( $parser_continuation_application->length !=
+                    length($textOfCurrentLine) )
+                {
+                    die "Line # $currentLineNumber - Bad parse. Expected "
+                      . $parser_continuation_application->length
+                      . " characters but read "
+                      . length($textOfCurrentLine) . "\n";
+                }
 
                 #Parse again with a more specific parser
-                $data2 =
+                $parser2_ref =
                   $parser_continuation_application->parse_newref(
                     $textOfCurrentLine);
             }
@@ -417,8 +421,32 @@ while (<$file>) {
         }
     }
 
+    #Add new columns for any latitude/longtitude
+    #Convert the CIFP format longtitude/latitude to decimal WGS84
+    for my $coordinateKey ( keys $parser2_ref ) {
+        my $value = $parser2_ref->{$coordinateKey};
+
+        #Find any entry that ends in latitude/longitude
+        if ( $coordinateKey =~ /(?:latitude|longitude)$/ix ) {
+            my $wgs84_coordinate;
+            
+            #Make sure at least a placeholder key is present
+            $parser2_ref->{ $coordinateKey . '_WGS84' } = 0;
+            
+            if ( $value) {
+                #Convert that value to WGS84 decimal
+                $wgs84_coordinate = coordinateToDecimalCifpFormat($value);
+                }
+
+            #If the conversion succeeded update the new key with this calculated value
+            if ($wgs84_coordinate) {
+                $parser2_ref->{ $coordinateKey . '_WGS84' } = $wgs84_coordinate;
+            }
+        }
+    }
+
     # #Add the raw text of this line in just for reference
-    # $data2->{rawTextOfCurrentLine} = $textOfCurrentLine;
+    # $parser2_ref->{rawTextOfCurrentLine} = $textOfCurrentLine;
 
     #Create the table for each recordType if we haven't already
     #uses all the sorted keys in the hash as column names
@@ -446,10 +474,11 @@ while (<$file>) {
           . $application . "_"
           . $sections{$SectionCode}{$SubSectionCode}
           . '" (_id INTEGER PRIMARY KEY AUTOINCREMENT,'
-          . join( ',', sort { lc $a cmp lc $b } keys $data2 ) . ')';
+          . join( ',', sort { lc $a cmp lc $b } keys $parser2_ref ) . ')';
 
         # Create the table
-        # say $createStmt . "\n";
+        say $createStmt . "\n";
+
         # say "";
         $dbh->do($createStmt);
 
@@ -467,20 +496,21 @@ while (<$file>) {
       . $SubSectionCode . "_"
       . $application . "_"
       . $sections{$SectionCode}{$SubSectionCode} . '" ('
-      . join( ',', keys $data2 )
+      . join( ',', keys $parser2_ref )
       . ') VALUES ('
-      . join( ',', ('?') x keys $data2 ) . ')';
+      . join( ',', ('?') x keys $parser2_ref ) . ')';
 
     #Insert the values into the database
     my $sth = $dbh->prepare($insertStmt);
 
     # my $sth = $dbh->prepare_cached($insertStmt);
-    $sth->execute( values $data2 );
+    $sth->execute( values $parser2_ref );
 
 }
 
 #Show what Sections and Subsections we found in this file
-print Dumper( \%continuationAndApplicationTypes );
+say "Types of records found in $datafile";
+print Dumper( \%haveCreatedTable );
 close($file);
 exit;
 
@@ -489,67 +519,170 @@ sub coordinateToDecimalCifpFormat {
     #Convert a latitude or longitude in CIFP format to its decimal equivalent
     my ($coordinate) = shift;
     my ( $deg, $min, $sec, $signedDegrees, $declination, $secPostDecimal );
-    my $data;
+    my $parser_ref;
 
-    #First parse the common information for a record to determine which more specific parser to use
-    my $parser_latitude = Parse::FixedLength->new(
-        [
-            qw(
-              Declination:1
-              Degrees:2
-              Minutes:2
-              Seconds:2
-              SecondsPostDecimal:2
-              )
-        ]
-    );
-    my $parser_longitude = Parse::FixedLength->new(
-        [
-            qw(
-              Declination:1
-              Degrees:3
-              Minutes:2
-              Seconds:2
-              SecondsPostDecimal:2
-              )
-        ]
-    );
+    #Get the length of this coordinate
+    my $coordinate_length = length($coordinate);
 
     #Get the first character of the coordinate and parse accordingly
     $declination = substr( $coordinate, 0, 1 );
 
     given ($declination) {
-        when (/[NS]/) {
-            $data = $parser_latitude->parse_newref($coordinate);
-            die "Bad input length on parser_latitude"
-              if ( $parser_latitude->length != 9 );
+
+        when (/[NS]/i) {
+            my $parser_latitude;
+
+            given ($coordinate_length) {
+                when (3) {
+                    $parser_latitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:2
+                              )
+                        ]
+                    );
+                }
+                when (9) {
+                    $parser_latitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:2
+                              Minutes:2
+                              Seconds:2
+                              SecondsPostDecimal:2
+                              )
+                        ]
+                    );
+                }
+
+                when (11) {
+                        # 5.267 High Precision Latitude (HPLAT)
+                        # Definition/Description: The “High Precision Latitude”
+                        # field contains the latitude of the navigation feature
+                        # identified in the record.
+                        # Source/Content: The content of field is an expansion of
+                        # the latitude defined in Section 5.36 to include degrees,
+                        # minutes, tenths, hundredths, thousandths and tenths of
+                        # thousandths of seconds to accommodate the high
+                        # precision resolution of 0.0005 arc seconds.
+                        #
+                        # Used On:Path Point Records
+                        # Length:11 characters
+                        # Character Type:Alpha/numeric
+                        # Example:N3028422400
+#                     say "High precision latitude: $coordinate";
+                    $parser_latitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:2
+                              Minutes:2
+                              Seconds:2
+                              SecondsPostDecimal:4
+                              )
+                        ]
+                    );
+                }
+                default {
+                    die "Bad input length on parser_latitude: $coordinate";
+                }
+            }
+
+           
+            $parser_ref = $parser_latitude->parse_newref($coordinate);
 
             #Latitude is invalid if less than -90  or greater than 90
             # $signedDegrees = "" if ( abs($signedDegrees) > 90 );
         }
-        when (/[EW]/) {
-            $data = $parser_longitude->parse_newref($coordinate);
-            die "Bad input length on parser_longitude"
-              if ( $parser_longitude->length != 10 );
+        when (/[EW]/i) {
+            my $parser_longitude;
+
+            given ($coordinate_length) {
+                when (4) {
+                    $parser_longitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:3
+                              )
+                        ]
+                    );
+                }
+                when (10) {
+                    $parser_longitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:3
+                              Minutes:2
+                              Seconds:2
+                              SecondsPostDecimal:2
+                              )
+                        ]
+                    );
+                }
+
+                when (12) {
+                        #
+                        # 5.268
+                        # High Precision Longitude (HPLONG)
+                        # Definition/Description: The “High Precision Longitude”
+                        # field contains the latitude of the navigation feature
+                        # identified in the record.
+                        #
+                        # Source/Content: The content of field is an expansion of
+                        # the latitude defined in Section 5.36 to include degrees,
+                        # minutes, tenths, hundredths, thousandths and tenths of
+                        # thousandths of seconds to accommodate the high
+                        # precision resolution of 0.0005 arc seconds.
+                        #
+                        # Used On:Path Point Records
+                        # Length:12 characters
+                        # Character Type:Alpha/numeric
+                        # Example:W081420301000
+#                     say "High precision longitude: $coordinate";
+                    $parser_longitude = Parse::FixedLength->new(
+                        [
+                            qw(
+                              Declination:1
+                              Degrees:3
+                              Minutes:2
+                              Seconds:2
+                              SecondsPostDecimal:4
+                              )
+                        ]
+                    );
+                }
+                default {
+                    die "Bad input length on parser_longitude: $coordinate";
+                }
+            }
+
+            $parser_ref = $parser_longitude->parse_newref($coordinate);
 
             #Longitude is invalid if less than -180 or greater than 180
             # $signedDegrees = "" if ( abs($signedDegrees) > 180 );
         }
         default {
-            return -1;
+            say "Error on CifpCoordinate: $coordinate";
+            return 0;
 
         }
     }
 
-    $declination    = $data->{Declination};
-    $deg            = $data->{Degrees};
-    $min            = $data->{Minutes};
-    $sec            = $data->{Seconds};
-    $secPostDecimal = $data->{SecondsPostDecimal};
 
-    # print Dumper($data);
+    $declination    = $parser_ref->{Declination};
+    $deg            = $parser_ref->{Degrees};
+    $min            = $parser_ref->{Minutes} //= 0;
+    $sec            = $parser_ref->{Seconds} //= 0;
+    $secPostDecimal = $parser_ref->{SecondsPostDecimal} //= 0;
+
+    #     print Dumper($parser_ref);
 
     $deg = $deg / 1;
+
     $min = $min / 60;
 
     #Concat the two portions of the seconds field with a decimal between
@@ -569,9 +702,13 @@ sub coordinateToDecimalCifpFormat {
 
     return ($signedDegrees);
 }
-sub usage{
+
+sub usage {
     say "Usage: $0 -v -e -c<cycle> <directory containing FAACIFP18>\n";
     say "-v: enable debug output";
     say "-e: expand text";
     return;
-    }
+}
+
+
+

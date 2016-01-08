@@ -289,7 +289,7 @@
                 TimeofOperation:10
                 TimeofOperation:10
                 ExclusionIndicator:1
-                UnitsofAltitude:1
+                UnitsOfAltitude:1
                 RestrictionAltitude:3
                 BlockIndicator:1
                 RestrictionAltitude:3
@@ -1098,7 +1098,7 @@
                 FileRecordNumber:5
                 CycleDate:4
                 ',
-        'N' => ' RecordType:1
+        'N' => 'RecordType:1
                 CustomerAreaCode:3
                 SectionCode:1
                 SubSectionCode:1

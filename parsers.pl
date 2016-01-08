@@ -197,7 +197,10 @@
             SectionCode:1
             Subsection:1
             ContinuationRecordNumber:1
-            WaypointDescriptionCode:4
+            WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
             BoundaryCode:1
             RouteType:1
             Level:1
@@ -423,7 +426,10 @@
                         SectionCode:1
                         SubSectionCode:1
                         ContinuationRecordNumber:1
-                        WaypointDescriptionCode:4
+                        WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
@@ -475,7 +481,10 @@
                         SectionCode:1
                         SubSectionCode:1
                         ContinuationRecordNumber:1
-                        WaypointDescriptionCode:4
+                        WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
@@ -527,7 +536,10 @@
                         SectionCode:1
                         SubSectionCode:1
                         ContinuationRecordNumber:1
-                        WaypointDescriptionCode:4
+                        WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
@@ -785,7 +797,10 @@
                 SectionCode:1
                 SubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode:4
+                WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
@@ -837,7 +852,10 @@
                 SectionCode:1
                 SubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode:4
+                WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
@@ -889,7 +907,10 @@
                 SectionCode:1
                 SubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode:4
+                WaypointDescriptionCode1:1             
+        WaypointDescriptionCode2:1         
+      WaypointDescriptionCode3:1    
+  WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2

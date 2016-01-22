@@ -42,8 +42,8 @@
             FileRecordNumber:5
             CycleDate:4
 '
-    },
-    'D' => {
+      },
+      'D' => {
         '' => '
                 RecordType:1
                 CustomerAreaCode:3
@@ -98,9 +98,9 @@
                 FileRecordNumber:5
                 CycleData:4 
                 ',
-    },
+      },
 
-    'E' => {
+      'E' => {
         'A' => '
                 RecordType:1
                 CustomerAreaCode:3
@@ -345,9 +345,9 @@
                 FileRecordNumber:5
                 CycleDate:4
                 ',
-    },
+      },
 
-    'H' => {
+      'H' => {
 
         # ''  => 'Remainder:132',
         'A' => 'RecordType:1
@@ -696,8 +696,8 @@
                 FileRecordNumber:5
                 CycleDate:4
                 ',
-    },
-    'P' => {
+      },
+      'P' => {
 
         # ''  => 'Remainder:132',
         'A' => 'RecordType:1
@@ -1341,8 +1341,8 @@
                 FileRecordNumber:5
                 CycleDate:4
                 ',
-    },
-    'R' => {
+      },
+      'R' => {
 
         # '' => 'Remainder:132',
         'A' => 'RecordType:1
@@ -1382,8 +1382,8 @@
                 FileRecordNumber:5
                 CycleDate:4
                 ',
-    },
-    'T' => {
+      },
+      'T' => {
 
         'C' => 'RecordType:1
                 BlankSpacing:3
@@ -1439,8 +1439,8 @@
                 ',
 
         # 'N' => '                ',
-    },
-    'U' => {
+      },
+      'U' => {
         'C' => 'RecordType:1
             CustomerAreaCode:3
             SectionCode:1
@@ -1540,4 +1540,4 @@
             FileRecordNumber:5
             CycleDate:4
             ',
-    }
+      }

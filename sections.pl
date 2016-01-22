@@ -1,11 +1,9 @@
-    'A' => {
-        'S' => 'MORA - Grid MORA'
-    },
-    'D' => {
+    'A'   => { 'S' => 'MORA - Grid MORA' },
+      'D' => {
         ''  => 'Navaid - VHF Navaid',
         'B' => 'Navaid - NDB Navaid',
-    },
-    'E' => {
+      },
+      'E' => {
         'A' => 'Enroute - Grid Waypoints',
         'M' => 'Enroute - Airway Markers',
         'P' => 'Enroute - Holding Patterns',
@@ -13,8 +11,8 @@
         'T' => 'Enroute - Preferred Routes',
         'U' => 'Enroute - Airway Restrictions',
         'V' => 'Enroute - Airway Restrictions',
-    },
-    'H' => {
+      },
+      'H' => {
         'A' => 'Heliport - Pads',
         'C' => 'Heliport - Terminal Waypoints',
         'D' => 'Heliport - SIDs',
@@ -23,8 +21,8 @@
         'K' => 'Heliport - TAA',
         'S' => 'Heliport - MSA',
         'V' => 'Heliport - Communications',
-    },
-    'P' => {
+      },
+      'P' => {
         'A' => 'Airport - Reference Points',
         'B' => 'Airport - Gates',
         'C' => 'Airport - Terminal Waypoints',
@@ -42,19 +40,19 @@
         'S' => 'Airport - MSA',
         'T' => 'Airport - GLS Station',
         'V' => 'Airport - Communications',
-    },
-    'R' => {
+      },
+      'R' => {
         ''  => 'Company Routes - Company Routes',
         'A' => 'Company Routes - Alternate Records',
 
-    },
-    'T' => {
+      },
+      'T' => {
         'C' => 'Tables - Cruising Tables',
         'G' => 'Tables - Geographical Reference',
         'N' => 'Tables - RNAV Name Table',
-    },
-    'U' => {
+      },
+      'U' => {
         'C' => 'Airspace - Controlled Airspace',
         'F' => 'Airspace - FIR/UIR',
         'R' => 'Airspace - Restrictive Airspace',
-    }
+      }

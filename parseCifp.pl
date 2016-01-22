@@ -136,6 +136,9 @@ $dbh->do("DROP TABLE IF EXISTS android_metadata");
 $dbh->do($create_metadata_table);
 $dbh->do($insert_metadata_record);
 
+###Open an SQL transaction...
+$dbh->begin_work();
+
 #Loop over each line of CIFP file
 while (<$file>) {
     my $textOfCurrentLine = $_;
@@ -184,6 +187,7 @@ while (<$file>) {
 
     #Is this an airport or heliport record with a blank subsection?
     if ( ( $SectionCode =~ m/[PH]/i ) && ( !$SubSectionCode ) ) {
+
         #If yes,  subsection codes are in a different place in airport and heliport records
         #Reparse and reset the variables
         $parser_ref = $parser_airportheliport->parse_newref($textOfCurrentLine);
@@ -299,6 +303,12 @@ while (<$file>) {
 
     #Work with continuation records
 
+    if (   $parser2_ref->{ContinuationRecordNumber}
+        && $parser2_ref->{ContinuationRecordNumber} > 2 )
+    {
+        say "Continuation record number greater than 2";
+    }
+
     #This is meant to check that records that should have {ContinuationRecordNumber} defined actually do.
     if ( not defined $parser2_ref->{ContinuationRecordNumber} ) {
         say "No continuation number for this record";
@@ -312,9 +322,10 @@ while (<$file>) {
     elsif ( $parser2_ref->{ContinuationRecordNumber} eq '1' ) {
 
         # if ($debug) {
-        # say "Next record is a continuation record";
+        #         say "Next record is a continuation record";
         # # print Dumper($parser2_ref);
-        # say $textOfCurrentLine;
+        #         say $parser2_ref->{ContinuationRecordNumber};
+        #         say $textOfCurrentLine;
         # }
     }
 
@@ -322,8 +333,9 @@ while (<$file>) {
     elsif (( $parser2_ref->{ContinuationRecordNumber} ne '0' )
         && ( $parser2_ref->{ContinuationRecordNumber} ne '1' ) )
     {
-        # say "This record is a continuation record for $SectionCode-$SubSectionCode";
-        # say "$textOfCurrentLine";
+        #         say "This record is a continuation record for $SectionCode-$SubSectionCode";
+        #         say $parser2_ref->{ContinuationRecordNumber};
+        #         say "$textOfCurrentLine";
         $primary_or_continuation = "continuation";
 
         #Is there a base continuation parser for this?
@@ -429,14 +441,15 @@ while (<$file>) {
         #Find any entry that ends in latitude/longitude
         if ( $coordinateKey =~ /(?:latitude|longitude)$/ix ) {
             my $wgs84_coordinate;
-            
+
             #Make sure at least a placeholder key is present
-            $parser2_ref->{ $coordinateKey . '_WGS84' } = 0;
-            
-            if ( $value) {
+            $parser2_ref->{ $coordinateKey . '_WGS84' } = '';
+
+            if ($value) {
+
                 #Convert that value to WGS84 decimal
                 $wgs84_coordinate = coordinateToDecimalCifpFormat($value);
-                }
+            }
 
             #If the conversion succeeded update the new key with this calculated value
             if ($wgs84_coordinate) {
@@ -447,6 +460,22 @@ while (<$file>) {
 
     # #Add the raw text of this line in just for reference
     # $parser2_ref->{rawTextOfCurrentLine} = $textOfCurrentLine;
+
+    #Delete any keys/columns with "BlankSpacing" in the name
+    {
+        my @unwanted;
+        foreach my $key ( keys %{$parser2_ref} ) {
+            if ( $key =~ /BlankSpacing/i ) {
+
+                #Save this key to our array of entries to delete
+                push @unwanted, $key;
+            }
+        }
+
+        foreach my $key (@unwanted) {
+            delete $parser2_ref->{$key};
+        }
+    }
 
     #Create the table for each recordType if we haven't already
     #uses all the sorted keys in the hash as column names
@@ -507,6 +536,8 @@ while (<$file>) {
     $sth->execute( values $parser2_ref );
 
 }
+### Transaction commit...
+$dbh->commit();
 
 #Show what Sections and Subsections we found in this file
 say "Types of records found in $datafile";
@@ -558,21 +589,22 @@ sub coordinateToDecimalCifpFormat {
                 }
 
                 when (11) {
-                        # 5.267 High Precision Latitude (HPLAT)
-                        # Definition/Description: The “High Precision Latitude”
-                        # field contains the latitude of the navigation feature
-                        # identified in the record.
-                        # Source/Content: The content of field is an expansion of
-                        # the latitude defined in Section 5.36 to include degrees,
-                        # minutes, tenths, hundredths, thousandths and tenths of
-                        # thousandths of seconds to accommodate the high
-                        # precision resolution of 0.0005 arc seconds.
-                        #
-                        # Used On:Path Point Records
-                        # Length:11 characters
-                        # Character Type:Alpha/numeric
-                        # Example:N3028422400
-#                     say "High precision latitude: $coordinate";
+
+                    # 5.267 High Precision Latitude (HPLAT)
+                    # Definition/Description: The “High Precision Latitude”
+                    # field contains the latitude of the navigation feature
+                    # identified in the record.
+                    # Source/Content: The content of field is an expansion of
+                    # the latitude defined in Section 5.36 to include degrees,
+                    # minutes, tenths, hundredths, thousandths and tenths of
+                    # thousandths of seconds to accommodate the high
+                    # precision resolution of 0.0005 arc seconds.
+                    #
+                    # Used On:Path Point Records
+                    # Length:11 characters
+                    # Character Type:Alpha/numeric
+                    # Example:N3028422400
+                    #                     say "High precision latitude: $coordinate";
                     $parser_latitude = Parse::FixedLength->new(
                         [
                             qw(
@@ -590,7 +622,6 @@ sub coordinateToDecimalCifpFormat {
                 }
             }
 
-           
             $parser_ref = $parser_latitude->parse_newref($coordinate);
 
             #Latitude is invalid if less than -90  or greater than 90
@@ -625,24 +656,24 @@ sub coordinateToDecimalCifpFormat {
                 }
 
                 when (12) {
-                        #
-                        # 5.268
-                        # High Precision Longitude (HPLONG)
-                        # Definition/Description: The “High Precision Longitude”
-                        # field contains the latitude of the navigation feature
-                        # identified in the record.
-                        #
-                        # Source/Content: The content of field is an expansion of
-                        # the latitude defined in Section 5.36 to include degrees,
-                        # minutes, tenths, hundredths, thousandths and tenths of
-                        # thousandths of seconds to accommodate the high
-                        # precision resolution of 0.0005 arc seconds.
-                        #
-                        # Used On:Path Point Records
-                        # Length:12 characters
-                        # Character Type:Alpha/numeric
-                        # Example:W081420301000
-#                     say "High precision longitude: $coordinate";
+                    #
+                    # 5.268
+                    # High Precision Longitude (HPLONG)
+                    # Definition/Description: The “High Precision Longitude”
+                    # field contains the latitude of the navigation feature
+                    # identified in the record.
+                    #
+                    # Source/Content: The content of field is an expansion of
+                    # the latitude defined in Section 5.36 to include degrees,
+                    # minutes, tenths, hundredths, thousandths and tenths of
+                    # thousandths of seconds to accommodate the high
+                    # precision resolution of 0.0005 arc seconds.
+                    #
+                    # Used On:Path Point Records
+                    # Length:12 characters
+                    # Character Type:Alpha/numeric
+                    # Example:W081420301000
+                    #                     say "High precision longitude: $coordinate";
                     $parser_longitude = Parse::FixedLength->new(
                         [
                             qw(
@@ -671,7 +702,6 @@ sub coordinateToDecimalCifpFormat {
 
         }
     }
-
 
     $declination    = $parser_ref->{Declination};
     $deg            = $parser_ref->{Degrees};
@@ -709,6 +739,4 @@ sub usage {
     say "-e: expand text";
     return;
 }
-
-
 

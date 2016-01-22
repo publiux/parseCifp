@@ -1,3 +1,4 @@
+
     'A' => {
         'S' => 'RecordType:1
             BlankSpacing:3
@@ -198,9 +199,9 @@
             Subsection:1
             ContinuationRecordNumber:1
             WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+            WaypointDescriptionCode2:1         
+            WaypointDescriptionCode3:1    
+            WaypointDescriptionCode4:1
             BoundaryCode:1
             RouteType:1
             Level:1
@@ -241,7 +242,7 @@
                 SectionCode:1
                 SubSectionCode:1
                 VIACode:3
-                SIDSTARAWYIdent:6Note1
+                SIDSTARAWYIdent:6
                 AREACode:3
                 Level:1
                 RouteType:1
@@ -798,9 +799,9 @@
                 SubSectionCode:1
                 ContinuationRecordNumber:1
                 WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                WaypointDescriptionCode2:1         
+                WaypointDescriptionCode3:1    
+                WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
@@ -1282,7 +1283,7 @@
                 GLSChannel:5
                 RunwayIdentifier:5
                 Blank:19
-                GLSApproachBearing:4Note1
+                GLSApproachBearing:4
                 StationLatitude:9
                 StationLongitude:10
                 GLSStationident:4
@@ -1458,7 +1459,8 @@
             TimeCode:1
             NOTAM:1
             BlankSpacing:2
-            BoundaryVia:2
+            BoundaryVia_1:1
+            BoundaryVia_2:1
             Latitude:9
             Longitude:10
             ArcOriginLatitude:9
@@ -1490,7 +1492,8 @@
                 ReportingUnitsAltitude:1
                 EntryReport:1
                 BlankSpacing:1
-                BoundaryVia:2
+                BoundaryVia_1:1
+                BoundaryVia_2:1
                 FIRUIRLatitude:9
                 FIRUIRLongitude:10
                 ArcOriginLatitude:9
@@ -1520,7 +1523,8 @@
             TimeCode:1
             NOTAM:1
             BlankSpacing:2
-            BoundaryVia:2
+            BoundaryVia_1:1
+            BoundaryVia_2:1
             Latitude:9
             Longitude:10
             ArcOriginLatitude:9

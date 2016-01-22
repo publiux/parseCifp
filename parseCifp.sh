@@ -15,8 +15,19 @@ cycle="$1"
 #Where the CIFP data is unzipped to
 datadir=./CIFP_20$cycle/
 
+#Name of the CIFP zip file.  Must be in the current directory
+sourceZip="CIFP_20$cycle.zip"
+
 #Where to save files we create
 outputdir=.
+
+if [ ! -f $sourceZip ]; then
+    echo "$sourceZip doesn't exist in the current directory"
+    exit 1
+fi
+
+echo "Unzipping CIFP $cycle files"
+unzip -u -j -q "$sourceZip"  -d "$datadir" > "$cycle-unzip.txt"
 
 #delete any existing files
 rm -f $outputdir/cifp-$cycle.db

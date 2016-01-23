@@ -66,8 +66,7 @@ my %haveCreatedTable = ();
 
 my %parameters = (
     'autonum' => 'true',
-
-    # 'trim'    => 'true',
+    'trim'    => 'true',
 );
 
 #Load the hash defintion of sections in an external file
@@ -244,6 +243,13 @@ while (<$file>) {
     #Parse again with a more specific parser
     my $parser2_ref = $parser_specific->parse_newref($textOfCurrentLine);
 
+    #Array of values
+    # my  @ary      = $parser_specific->parse($textOfCurrentLine);
+    # say @ary;
+    #Reference to array of names
+    my  $parser_names_ref = $parser_specific->names;
+    # say @$ary_ref;
+    
     #------------------------------------------------
     # #This is temporary code to process and print out AS - MORA records
     # if ( $SectionCode eq "A" && $SubSectionCode eq "S" ) {
@@ -366,7 +372,9 @@ while (<$file>) {
             #Parse the line with the base parser
             $parser2_ref =
               $parser_continuation_base->parse_newref($textOfCurrentLine);
-
+              
+            #Update the names of this new parser
+            $parser_names_ref = $parser_continuation_base->names;
             # say "This record is a continuation record";
             # say
             # "$datafile line # $. : SectionCode:$SectionCode and SubSectionCode:$SubSectionCode---";
@@ -407,6 +415,9 @@ while (<$file>) {
                 $parser2_ref =
                   $parser_continuation_application->parse_newref(
                     $textOfCurrentLine);
+                
+                #Update the names of this new parser
+                $parser_names_ref = $parser_continuation_application->names;
             }
             else {
                 #We don't have application continuation parser
@@ -435,13 +446,16 @@ while (<$file>) {
 
     #Add new columns for any latitude/longtitude
     #Convert the CIFP format longtitude/latitude to decimal WGS84
-    for my $coordinateKey ( keys $parser2_ref ) {
+    for my $coordinateKey ( keys %{ $parser2_ref } ) {
         my $value = $parser2_ref->{$coordinateKey};
 
-        #Find any entry that ends in latitude/longitude
+        #Find any entry that ends in "latitude" or "longitude"
         if ( $coordinateKey =~ /(?:latitude|longitude)$/ix ) {
             my $wgs84_coordinate;
-
+            
+            #Add this new key name so it will get included during table creation
+            push $parser_names_ref, $coordinateKey . '_WGS84';
+            
             #Make sure at least a placeholder key is present
             $parser2_ref->{ $coordinateKey . '_WGS84' } = '';
 
@@ -475,6 +489,13 @@ while (<$file>) {
         foreach my $key (@unwanted) {
             delete $parser2_ref->{$key};
         }
+        #Delete any "BlankSpacing" columns from the parser sections list
+        @$parser_names_ref = grep { $_ !~  /BlankSpacing/i } @$parser_names_ref;
+#         @$parser_names_ref
+#         my @del_indexes = reverse(grep { $arr[$_] =~ /BlankSpacing/i } 0..$#arr);
+#         foreach $item (@del_indexes) {
+#             splice (@arr,$item,1);
+#             }
     }
 
     #Create the table for each recordType if we haven't already
@@ -494,7 +515,10 @@ while (<$file>) {
 
         $dbh->do($drop);
 
-        #Makes a "CREATE TABLE" statement based on the keys of the hash, columns sorted alphabetically
+        #Makes a "CREATE TABLE" statement based on the keys of the hash
+        # I'm trying two methods here, so only one "join" should be uncommented:
+        # a) columns sorted alphabetically
+        # b) Columns in the order they're defined in parser
         my $createStmt =
             'CREATE TABLE "'
           . $primary_or_continuation . "_"
@@ -503,7 +527,9 @@ while (<$file>) {
           . $application . "_"
           . $sections{$SectionCode}{$SubSectionCode}
           . '" (_id INTEGER PRIMARY KEY AUTOINCREMENT,'
-          . join( ',', sort { lc $a cmp lc $b } keys $parser2_ref ) . ')';
+#           . join( ',', sort { lc $a cmp lc $b } keys %{ $parser2_ref } ) . ')'
+          . join( ',', @$parser_names_ref ) . ')'
+          ;
 
         # Create the table
         say $createStmt . "\n";
@@ -518,6 +544,8 @@ while (<$file>) {
 
     #-------------------
     #Make an "INSERT INTO" statement based on the keys and values of the hash
+    #Relies on the fact that "keys" and "values" will always resolve in the same 
+    # order unless you modify the hash
     my $insertStmt =
         'INSERT INTO "'
       . $primary_or_continuation . "_"
@@ -525,15 +553,15 @@ while (<$file>) {
       . $SubSectionCode . "_"
       . $application . "_"
       . $sections{$SectionCode}{$SubSectionCode} . '" ('
-      . join( ',', keys $parser2_ref )
+      . join( ',', keys %{ $parser2_ref } )
       . ') VALUES ('
-      . join( ',', ('?') x keys $parser2_ref ) . ')';
+      . join( ',', ('?') x keys %{ $parser2_ref } ) . ')';
 
     #Insert the values into the database
     my $sth = $dbh->prepare($insertStmt);
 
     # my $sth = $dbh->prepare_cached($insertStmt);
-    $sth->execute( values $parser2_ref );
+    $sth->execute( values %{ $parser2_ref } );
 
 }
 ### Transaction commit...

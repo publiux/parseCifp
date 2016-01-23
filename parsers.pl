@@ -1147,7 +1147,7 @@
         'P' => 'RecordType:1
                 CustomerAreaCode:3
                 SectionCode:1
-                Blank:1
+                BlankSpacing:1
                 AirportIdentifier:4
                 ICAOCode:2
                 SubSectionCode:1
@@ -1272,22 +1272,22 @@
         'T' => 'RecordType:1
                 CustomerAreaCode:3
                 SectionCode:1
-                Blank:1
+                BlankSpacing:1
                 AirportorHeliportIdentifier:4
                 ICAOCode:2
                 SubSectionCode:1
                 GLSRefPathIdentifier:4
                 GLSCategory:1
-                Blank:3
+                BlankSpacing:3
                 ContinuationRecordNumber:1
                 GLSChannel:5
                 RunwayIdentifier:5
-                Blank:19
+                BlankSpacing:19
                 GLSApproachBearing:4
                 StationLatitude:9
                 StationLongitude:10
                 GLSStationident:4
-                Blank:5
+                BlankSpacing:5
                 ServiceVolumeRadius:2
                 TDMASlots:2
                 GLSApproachSlope:3
@@ -1296,9 +1296,9 @@
                 StationElevation:5
                 DatumCode:3
                 StationType:3
-                Blank:2
+                BlankSpacing:2
                 StationElevationWGS84:5
-                Blank:8
+                BlankSpacing:8
                 FileRecordNumber:5
                 CycleDate:4
                 ',

@@ -18,13 +18,12 @@ SELECT
     , ( CAST( ArcBearing AS REAL) / 10) as ArcBearing
     , ( CAST( ArcDistance AS REAL) / 10) as ArcDistance 
     , ArcOriginLongitude_WGS84
-    , ArcOriginLatitude_WGS84     
+    , ArcOriginLatitude_WGS84
     , ControlledAirspaceName
     , Longitude_WGS84
-    , Latitude_WGS84    
+    , Latitude_WGS84
     , LowerLimit
     , UpperLimit
-
 
 FROM
     "primary_U_C_base_Airspace - Controlled Airspace" 
@@ -66,22 +65,22 @@ FROM
 --------------------------------------------------------------------------------
 --IAPs (all steps) at an airport
 SELECT *
-    --iap.AirportIdentifier
+    --iap.LandingFacilityIcaoIdentifier
     --,iap.SIDSTARApproachIdentifier
 
 FROM
     "primary_P_F_base_Airport - Approach Procedures" AS IAP
 
 WHERE
-    iap.AirportIdentifier LIKE  '%RIC%'
+    iap.LandingFacilityIcaoIdentifier LIKE  '%RIC%'
 --         and
 --     iap.SIDSTARApproachIdentifier LIKE  '%18%'
     ;
 --------------------------------------------------------------------------------
---IAPs (all steps) at an airport, with the interesting parts of each step
+--IAPs (all steps) at an airport, with the more interesting parts of each step
 SELECT
     iap._id
-    ,AirportIdentifier
+    ,LandingFacilityIcaoIdentifier
     ,SIDSTARApproachIdentifier
     ,TransitionIdentifier
     ,SequenceNumber
@@ -121,7 +120,7 @@ ON
 --     iap.FixIdentifier = enroute.waypointIdentifier
     
 WHERE
-    iap.AirportIdentifier LIKE  '%ART%'
+    iap.LandingFacilityIcaoIdentifier LIKE  '%ART%'
 ORDER BY
     iap._id
     ;
@@ -132,8 +131,8 @@ SELECT
 FROM
     "primary_P_S_base_Airport - MSA" AS msa
 WHERE
-    --msa.AirportIdentifier LIKE  '%RIC%'
-    msa.AirportIdentifier IN ('KART')
+    --msa.LandingFacilityIcaoIdentifier LIKE  '%RIC%'
+    msa.LandingFacilityIcaoIdentifier IN ('KART')
     ;
 --------------------------------------------------------------------------------
 -- Or just the more interesting parts of MSA
@@ -142,15 +141,15 @@ WHERE
 .output MSA_points.csv
 
 SELECT
-    AirportIdentifier
-    ,MagneticTrueIndicator
-    ,MSACenter
-    ,msa.IcaoCode_1
-    ,msa.IcaoCode_2
-    ,msa.SectionCode_1
-    ,msa.SubSectionCode_1
-    ,msa.SectionCode_2
-    ,msa.SubSectionCode_2
+    msa.LandingFacilityIcaoIdentifier
+    ,msa.MagneticTrueIndicator
+    ,msa.MSACenter
+    ,msa.LandingFacilityIcaoRegionCode
+    ,msa.MSACenterIcaoRegionCode
+    ,msa.SectionCode
+    ,msa.SubSectionCode
+    ,msa.MSACenterSectionCode
+    ,msa.MSACenterSubSectionCode
     ,SectorAltitude_1
     ,SectorBearing_1
     ,SectorRadius_1
@@ -217,106 +216,103 @@ FROM
 LEFT OUTER JOIN
     "primary_E_A_base_Enroute - Grid Waypoints" AS grid
         ON
-            (msa.SectionCode_2 = 'E' AND msa.SubSectionCode_2 = 'A')
+            (msa.MSACenterSectionCode = 'E' AND msa.MSACenterSubSectionCode = 'A')
                 AND
             msa.MSACenter = grid.waypointIdentifier
                 AND
-            msa.IcaoCode_2 = grid.IcaoCode_2
+            msa.MSACenterIcaoRegionCode = grid.WaypointIcaoRegionCode
             
 LEFT OUTER JOIN
     "primary_P_C_base_Airport - Terminal Waypoints" AS term_fix
         ON
-            (msa.SectionCode_2 = 'P' AND msa.SubSectionCode_2 = 'C')
+            (msa.MSACenterSectionCode = 'P' AND msa.MSACenterSubSectionCode = 'C')
                 AND
-            msa.AirportIdentifier = term_fix.RegionCode
+            msa.LandingFacilityIcaoIdentifier = term_fix.RegionCode
                 AND
             msa.MSACenter = term_fix.waypointIdentifier
                 AND 
-            msa.IcaoCode_2 = term_fix.IcaoCode_2
+            msa.MSACenterIcaoRegionCode = term_fix.WaypointIcaoRegionCode
 
 LEFT OUTER JOIN
     "primary_D__base_Navaid - VHF Navaid" AS vhf
         ON
-            (msa.SectionCode_2 = 'D' AND msa.SubSectionCode_2 = '')
+            (msa.MSACenterSectionCode = 'D' AND msa.MSACenterSubSectionCode = '')
                 AND
-            msa.IcaoCode_2 = vhf.IcaoCode_2
+            msa.MSACenterIcaoRegionCode = vhf.VorIcaoRegionCode
                 AND
             msa.MSACenter = vhf.vorIdentifier
 
 LEFT OUTER JOIN
     "primary_D_B_base_Navaid - NDB Navaid" AS ndb
         ON
-            (msa.SectionCode_2 = 'D' AND msa.SubSectionCode_2 = 'B')
+            (msa.MSACenterSectionCode = 'D' AND msa.MSACenterSubSectionCode = 'B')
                 AND
-            msa.IcaoCode_2 = ndb.IcaoCode_2
+            msa.MSACenterIcaoRegionCode = ndb.NdbIcaoRegionCode
                 AND
             msa.MSACenter = ndb.ndbIdentifier
 
 LEFT OUTER JOIN
     "primary_P_N_base_Airport - Terminal NDB" AS term_ndb
         ON
-            (msa.SectionCode_2 = 'P' AND msa.SubSectionCode_2 = 'N')
+            (msa.MSACenterSectionCode = 'P' AND msa.MSACenterSubSectionCode = 'N')
                 AND
-            msa.IcaoCode_2 = term_ndb.IcaoCode_2
+            msa.MSACenterIcaoRegionCode = term_ndb.NdbIcaoRegionCode
                 AND
             msa.MSACenter = term_ndb.ndbIdentifier
                 AND
-            msa.AirportIdentifier = term_ndb.AirportIcaoIdentifier
+            msa.LandingFacilityIcaoIdentifier = term_ndb.LandingFacilityIcaoIdentifier
 
 LEFT OUTER JOIN
     "primary_P_G_base_Airport - Runways" AS rwy
         ON
-           (msa.SectionCode_2 = 'P' AND msa.SubSectionCode_2 = 'G')
+           (msa.MSACenterSectionCode = 'P' AND msa.MSACenterSubSectionCode = 'G')
                 AND
             msa.MSACenter = rwy.runwayIdentifier
                 AND
-            msa.AirportIdentifier = rwy.AirportIcaoIdentifier
+            msa.LandingFacilityIcaoIdentifier = rwy.LandingFacilityIcaoIdentifier
 
 -- WHERE
---     msa.AirportIdentifier LIKE  '%RIC%'
---     msa.AirportIdentifier IN ('KART')
+--     msa.LandingFacilityIcaoIdentifier LIKE  '%RIC%'
+--     msa.LandingFacilityIcaoIdentifier IN ('KART')
     ;
 --------------------------------------------------------------------------------
 --SIDs at an airport
 SELECT distinct
-    sids.AirportIdentifier
+    sids.LandingFacilityIcaoIdentifier
     ,sids.SIDSTARApproachIdentifier
-
 FROM
     "primary_P_D_base_Airport - SIDs" AS sids
 
 WHERE
-    sids.AirportIdentifier = 'KRIC'
+    sids.LandingFacilityIcaoIdentifier = 'KRIC'
     ;
 --------------------------------------------------------------------------------
 --STARs at an airport
 SELECT DISTINCT
-    stars.AirportIdentifier
+    stars.LandingFacilityIcaoIdentifier
     ,stars.SIDSTARApproachIdentifier
-
 FROM
     "primary_P_E_base_Airport - STARs" AS stars
-
 WHERE
-    stars.AirportIdentifier LIKE  '%RIC%'
+    stars.LandingFacilityIcaoIdentifier =  'KRIC'
     ;
 --------------------------------------------------------------------------------
 --IAPs at an airport
 SELECT DISTINCT
-    iap.AirportIdentifier
+    iap.LandingFacilityIcaoIdentifier
     ,iap.SIDSTARApproachIdentifier
 
 FROM
     "primary_P_F_base_Airport - Approach Procedures" AS IAP
 
 WHERE
-    iap.AirportIdentifier LIKE  '%RIC%'
+    iap.LandingFacilityIcaoIdentifier =  'KRIC'
     ;
 
 --------------------------------------------------------------------------------
 --Runways at an airport
 SELECT DISTINCT
-    rwy.AirportICAOIdentifier
+    rwy.LandingFacilityIcaoIdentifier
     ,rwy.RunwayIdentifier
     ,rwy.RunwayLatitude
     ,rwy.RunwayLongitude
@@ -326,20 +322,22 @@ FROM
     "primary_P_G_base_Airport - Runways" AS RWY
 
 WHERE
-    rwy.AirportICAOIdentifier LIKE  '%RIC%' ;
+    rwy.LandingFacilityIcaoIdentifier =  'KRIC' ;
 --------------------------------------------------------------------------------
---Longest runway's length at an airport (in hundreds of feet.  eg 090 = 9000')
-SELECT DISTINCT
-    rwy.AirportICAOIdentifier
-    ,rwy.LongestRunway
+--Longest runway's length at an airport (rwy.LongestRunway is hundreds of feet.  eg 090 = 9000')
+SELECT 
+    rwy.LandingFacilityIcaoIdentifier
+    , rwy.LongestRunway
+    , CAST(rwy.LongestRunway AS REAL) * 100 AS runwayLengthInFeet
 
 FROM
     "primary_P_A_base_Airport - Reference Points" AS RWY
 
 WHERE
-    rwy.AirportICAOIdentifier in ('KRIC', 'KDCA', 'KIAD', 'KORF') ;
+    rwy.LandingFacilityIcaoIdentifier IN ('KRIC', 'KDCA', 'KIAD', 'KORF') ;
 --------------------------------------------------------------------------------
 --NDB Navaids used for IAPs for an airport
+-- Needs to be fixed to correctly use joining criteria (see MSA for example
 SELECT DISTINCT
     iap.FixIdentifier
     ,NDB.NDBLatitude
@@ -356,6 +354,7 @@ ON
 WHERE
     airportidentifier LIKE  '%RIC%' ;
 --------------------------------------------------------------------------------
+-- Needs to be fixed to correctly use joining criteria (see MSA for example)
 --VHF Navaids used for IAPs for an airport
 SELECT DISTINCT
     iap.FixIdentifier
@@ -373,13 +372,14 @@ ON
 WHERE
     airportidentifier LIKE  '%RIC%' ;
 --------------------------------------------------------------------------------
+-- Needs to be fixed to correctly use joining criteria (see MSA for example)
 --Fixes used for IAPs for an airport
 SELECT DISTINCT
     iap.FixIdentifier
     ,fix.waypointLatitude
     ,fix.waypointLongitude
 FROM
-        "primary_P_F_base_Airport - Approach Procedures" AS IAP
+    "primary_P_F_base_Airport - Approach Procedures" AS IAP
 
 JOIN
     "primary_E_A_base_Enroute - Grid Waypoints" AS FIX
@@ -391,6 +391,7 @@ WHERE
     airportidentifier LIKE  '%RIC%'
     ;
 --------------------------------------------------------------------------------
+-- Needs to be fixed to correctly use joining criteria (see MSA for example)
 --Terminal waypoints used for IAPs for an airport
 SELECT DISTINCT
     iap.FixIdentifier
@@ -409,6 +410,7 @@ WHERE
 
 
 --------------------------------------------------------------------------------
+-- Needs to be fixed to correctly use joining criteria (see MSA for example)
 --Terminal waypoints used for IAPs for a heliport
 SELECT DISTINCT
     iap.FixIdentifier
@@ -428,7 +430,7 @@ WHERE
 --------------------------------------------------------------------------------
 SELECT
     --_id
-    --,AirportIdentifier
+    --,LandingFacilityIcaoIdentifier
     --,Altitude_1
     --,Altitude_2
     --,AltitudeDescription
@@ -484,15 +486,27 @@ WHERE
     ;
 
 ------------------------------------------------------------------------------
---Create lines for all procedures.  Doesn't look quite right due to the fact that
--- these types of steps in the procedure don't have associated fixes
--- "CA" -Course to an Altitude or CA Leg. Defines a specified course to a specific altitude at an unspecified position"
--- "CD" - Course to a DME Distance or CD Leg. Defines a specified course to a specific DME Distance which is from a specific database DME Navaid.
--- "CI" - Course to an Intercept or CI Leg. Defines a specified course to intercept a subsequent leg.
--- "VA" - Heading to an Altitude termination or VA Leg. Defines a specified heading to a specific Altitude termination at an unspecified position.
--- "VD" - Heading to a DME Distance termination or VD Leg. Defines a specified heading terminating at a specified DME Distance from a specific database DME Navaid.
--- "VI" - Heading to an Intercept or VI Leg. Defines a specified heading to intercept the subsequent leg at an unspecified position.
--- "VR" - Heading to a Radial  termination or VR Leg. Defines a specified heading to a specified radial from a specific database VOR Navaid.
+--Create lines for all procedures.  Doesn't look quite right due to the fact 
+-- that these types of legs in the procedure don't have specific associated fixes
+-- "CA" -Course to an Altitude or CA Leg. 
+--      Defines a specified course to a specific altitude at an unspecified position"
+-- "CD" - Course to a DME Distance or CD Leg. 
+--      Defines a specified course to a specific DME Distance which is from a 
+--      specific database DME Navaid.
+-- "CI" - Course to an Intercept or CI Leg. 
+--      Defines a specified course to intercept a subsequent leg.
+-- "VA" - Heading to an Altitude termination or VA Leg. 
+--      Defines a specified heading to a specific Altitude termination at an 
+--      unspecified position.
+-- "VD" - Heading to a DME Distance termination or VD Leg. 
+--      Defines a specified heading terminating at a specified DME Distance 
+--      from a specific database DME Navaid.
+-- "VI" - Heading to an Intercept or VI Leg. 
+--      Defines a specified heading to intercept the subsequent leg at an 
+--      unspecified position.
+-- "VR" - Heading to a Radial termination or VR Leg. 
+--      Defines a specified heading to a specified radial from a specific 
+--      database VOR Navaid.
 
 .headers on
 .mode csv
@@ -502,10 +516,10 @@ WHERE
 
 SELECT
     procedure._id
-    , procedure.AirportIdentifier
+    , procedure.LandingFacilityIcaoIdentifier
     , procedure.SIDSTARApproachIdentifier
     , procedure.TransitionIdentifier
-    , procedure.AirportIdentifier 
+    , procedure.LandingFacilityIcaoIdentifier 
         || '.' 
         || procedure.SIDSTARApproachIdentifier 
         || '.' 
@@ -515,29 +529,40 @@ SELECT
     , COALESCE( term_fix.waypointLongitude_wgs84
                 ,vhf.vorLongitude_wgs84
                 ,ndb.ndbLongitude_wgs84
+                ,term_ndb.ndbLongitude_wgs84
                 ,grid.waypointLongitude_wgs84
                 ,vhf.dmeLongitude_wgs84
+                ,rwy.RunwayLongitude_wgs84
                 )
                     AS Longitude
     , COALESCE( term_fix.waypointLatitude_wgs84
                 ,vhf.vorLatitude_wgs84
                 ,ndb.ndbLatitude_wgs84
+                ,term_ndb.ndbLatitude_wgs84
                 ,grid.waypointLatitude_wgs84
-                ,vhf.dmeLatitude_wgs84)
+                ,vhf.dmeLatitude_wgs84
+                ,rwy.RunwayLatitude_wgs84
+                )
                     AS Latitude
     , 'linestring ('
         || GROUP_CONCAT(
-                COALESCE(    term_fix.waypointLongitude_wgs84
-                            ,vhf.vorLongitude_wgs84
-                            ,ndb.ndbLongitude_wgs84
-                            ,grid.waypointLongitude_wgs84
-                            ,vhf.dmeLongitude_wgs84)
+                COALESCE(   term_fix.waypointLongitude_wgs84
+                        ,vhf.vorLongitude_wgs84
+                        ,ndb.ndbLongitude_wgs84
+                        ,term_ndb.ndbLongitude_wgs84
+                        ,grid.waypointLongitude_wgs84
+                        ,vhf.dmeLongitude_wgs84
+                        ,rwy.RunwayLongitude_wgs84
+                        )
             || ' '
-            || COALESCE(    term_fix.waypointLatitude_wgs84
-                            ,vhf.vorLatitude_wgs84
-                            ,ndb.ndbLatitude_wgs84
-                            ,grid.waypointLatitude_wgs84
-                            ,vhf.dmeLatitude_wgs84) 
+            || COALESCE(   term_fix.waypointLatitude_wgs84
+                        ,vhf.vorLatitude_wgs84
+                        ,ndb.ndbLatitude_wgs84
+                        ,term_ndb.ndbLatitude_wgs84
+                        ,grid.waypointLatitude_wgs84
+                        ,vhf.dmeLatitude_wgs84
+                        ,rwy.RunwayLatitude_wgs84
+                        ) 
             || ' )'
             )
         AS
@@ -552,49 +577,63 @@ FROM
 LEFT OUTER JOIN
     "primary_E_A_base_Enroute - Grid Waypoints" AS grid
         ON
+            (procedure.FixSectionCode = 'E' AND procedure.FixSubSectionCode = 'A')
+                AND
             procedure.FixIdentifier = grid.waypointIdentifier
-              AND
-            procedure.IcaoCode_1 = grid.IcaoCode_2
+                AND
+            procedure.FixIcaoRegionCode = grid.WaypointIcaoRegionCode
             
 LEFT OUTER JOIN
     "primary_P_C_base_Airport - Terminal Waypoints" AS term_fix
         ON
-            procedure.AirportIdentifier = term_fix.RegionCode
+            (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'C')
+                AND
+            procedure.LandingFacilityIcaoIdentifier = term_fix.RegionCode
                 AND
             procedure.FixIdentifier = term_fix.waypointIdentifier
                 AND 
-            procedure.IcaoCode_1 = term_fix.IcaoCode_2
+            procedure.FixIcaoRegionCode = term_fix.WaypointIcaoRegionCode
 
 LEFT OUTER JOIN
     "primary_D__base_Navaid - VHF Navaid" AS vhf
-        ON     
-            procedure.WaypointDescriptionCode1 = 'V'
+        ON
+            (procedure.FixSectionCode = 'D' AND procedure.FixSubSectionCode = '')
                 AND
-            procedure.IcaoCode_1 = vhf.IcaoCode_2
+            procedure.FixIcaoRegionCode = vhf.VorIcaoRegionCode
                 AND
             procedure.FixIdentifier = vhf.vorIdentifier
 
 LEFT OUTER JOIN
-    "primary_P_N_base_Airport - Terminal NDB" AS ndb
+    "primary_D_B_base_Navaid - NDB Navaid" AS ndb
         ON
-            procedure.WaypointDescriptionCode1 = 'N'
+            (procedure.FixSectionCode = 'D' AND procedure.FixSubSectionCode = 'B')
                 AND
-            procedure.IcaoCode_1 = ndb.IcaoCode_2
+            procedure.FixIcaoRegionCode = ndb.NdbIcaoRegionCode
                 AND
             procedure.FixIdentifier = ndb.ndbIdentifier
+
+LEFT OUTER JOIN
+    "primary_P_N_base_Airport - Terminal NDB" AS term_ndb
+        ON
+            (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'N')
                 AND
-            procedure.AirportIdentifier = ndb.AirportIcaoIdentifier
+            procedure.FixIcaoRegionCode = term_ndb.NdbIcaoRegionCode
+                AND
+            procedure.FixIdentifier = term_ndb.ndbIdentifier
+                AND
+            procedure.LandingFacilityIcaoIdentifier = term_ndb.LandingFacilityIcaoIdentifier            
 
 LEFT OUTER JOIN
     "primary_P_G_base_Airport - Runways" AS rwy
         ON
-            procedure.WaypointDescriptionCode1 = 'G'
+           (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'G')
                 AND
             procedure.FixIdentifier = rwy.runwayIdentifier
                 AND
-            procedure.AirportIdentifier = rwy.AirportIcaoIdentifier
+            procedure.LandingFacilityIcaoIdentifier = rwy.LandingFacilityIcaoIdentifier
+            
 WHERE
---     procedure.AirportIdentifier LIKE '%CAE%'
+--     procedure.LandingFacilityIcaoIdentifier LIKE '%CAE%'
 --            AND
     procedure.FixIdentifier IS NOT NULL
         AND 
@@ -610,6 +649,7 @@ ORDER BY
 
 ------------------------------------------------------------------------------
 -- Points associated with procedures
+
 .headers on
 .mode csv
 .output "iap-points.csv"
@@ -618,10 +658,10 @@ ORDER BY
 
 SELECT
     procedure._id
-    , procedure.AirportIdentifier
+    , procedure.LandingFacilityIcaoIdentifier
     , procedure.SIDSTARApproachIdentifier
     , procedure.TransitionIdentifier
-    , procedure.AirportIdentifier 
+    , procedure.LandingFacilityIcaoIdentifier 
         || '.' 
         || procedure.SIDSTARApproachIdentifier 
         || '.' 
@@ -650,28 +690,39 @@ SELECT
     , COALESCE( term_fix.waypointLongitude_wgs84
                 ,vhf.vorLongitude_wgs84
                 ,ndb.ndbLongitude_wgs84
+                ,term_ndb.ndbLongitude_wgs84
                 ,grid.waypointLongitude_wgs84
                 ,vhf.dmeLongitude_wgs84
+                ,rwy.RunwayLongitude_wgs84
                 )
                     AS Longitude
     , COALESCE( term_fix.waypointLatitude_wgs84
                 ,vhf.vorLatitude_wgs84
                 ,ndb.ndbLatitude_wgs84
+                ,term_ndb.ndbLatitude_wgs84
                 ,grid.waypointLatitude_wgs84
-                ,vhf.dmeLatitude_wgs84)
+                ,vhf.dmeLatitude_wgs84
+                ,rwy.RunwayLatitude_wgs84
+                )
                     AS Latitude
     , 'point( ' 
         || COALESCE(    term_fix.waypointLongitude_wgs84
-                        ,vhf.vorLongitude_wgs84
-                        ,ndb.ndbLongitude_wgs84
-                        ,grid.waypointLongitude_wgs84
-                        ,vhf.dmeLongitude_wgs84)
+                ,vhf.vorLongitude_wgs84
+                ,ndb.ndbLongitude_wgs84
+                ,term_ndb.ndbLongitude_wgs84
+                ,grid.waypointLongitude_wgs84
+                ,vhf.dmeLongitude_wgs84
+                ,rwy.RunwayLongitude_wgs84
+                )
         || ' '
         || COALESCE(    term_fix.waypointLatitude_wgs84
-                        ,vhf.vorLatitude_wgs84
-                        ,ndb.ndbLatitude_wgs84
-                        ,grid.waypointLatitude_wgs84
-                        ,vhf.dmeLatitude_wgs84) 
+                ,vhf.vorLatitude_wgs84
+                ,ndb.ndbLatitude_wgs84
+                ,term_ndb.ndbLatitude_wgs84
+                ,grid.waypointLatitude_wgs84
+                ,vhf.dmeLatitude_wgs84
+                ,rwy.RunwayLatitude_wgs84
+                ) 
         || ' )' 
             AS geometry
 
@@ -682,52 +733,64 @@ FROM
 
 LEFT OUTER JOIN
     "primary_E_A_base_Enroute - Grid Waypoints" AS grid
-        ON 
+        ON
+            (procedure.FixSectionCode = 'E' AND procedure.FixSubSectionCode = 'A')
+                AND
             procedure.FixIdentifier = grid.waypointIdentifier
-             AND
-            procedure.IcaoCode_1 = grid.IcaoCode_2
-
+                AND
+            procedure.FixIcaoRegionCode = grid.WaypointIcaoRegionCode
+            
 LEFT OUTER JOIN
     "primary_P_C_base_Airport - Terminal Waypoints" AS term_fix
         ON
-            procedure.AirportIdentifier = term_fix.RegionCode
+            (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'C')
+                AND
+            procedure.LandingFacilityIcaoIdentifier = term_fix.RegionCode
                 AND
             procedure.FixIdentifier = term_fix.waypointIdentifier
                 AND 
-            procedure.IcaoCode_1 = term_fix.IcaoCode_2
+            procedure.FixIcaoRegionCode = term_fix.WaypointIcaoRegionCode
 
 LEFT OUTER JOIN
     "primary_D__base_Navaid - VHF Navaid" AS vhf
-        ON     
-            procedure.WaypointDescriptionCode1 = 'V'
+        ON
+            (procedure.FixSectionCode = 'D' AND procedure.FixSubSectionCode = '')
                 AND
-            procedure.IcaoCode_1 = vhf.IcaoCode_2
+            procedure.FixIcaoRegionCode = vhf.VorIcaoRegionCode
                 AND
             procedure.FixIdentifier = vhf.vorIdentifier
 
 LEFT OUTER JOIN
-    "primary_P_N_base_Airport - Terminal NDB" AS ndb
+    "primary_D_B_base_Navaid - NDB Navaid" AS ndb
         ON
-            procedure.WaypointDescriptionCode1 = 'N'
+            (procedure.FixSectionCode = 'D' AND procedure.FixSubSectionCode = 'B')
                 AND
-            procedure.IcaoCode_1 = ndb.IcaoCode_2
+            procedure.FixIcaoRegionCode = ndb.NdbIcaoRegionCode
                 AND
             procedure.FixIdentifier = ndb.ndbIdentifier
+
+LEFT OUTER JOIN
+    "primary_P_N_base_Airport - Terminal NDB" AS term_ndb
+        ON
+            (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'N')
                 AND
-            procedure.AirportIdentifier = ndb.AirportIcaoIdentifier
+            procedure.FixIcaoRegionCode = term_ndb.NdbIcaoRegionCode
+                AND
+            procedure.FixIdentifier = term_ndb.ndbIdentifier
+                AND
+            procedure.LandingFacilityIcaoIdentifier = term_ndb.LandingFacilityIcaoIdentifier            
 
 LEFT OUTER JOIN
     "primary_P_G_base_Airport - Runways" AS rwy
-        ON 
-            procedure.WaypointDescriptionCode1 = 'G'
+        ON
+           (procedure.FixSectionCode = 'P' AND procedure.FixSubSectionCode = 'G')
                 AND
             procedure.FixIdentifier = rwy.runwayIdentifier
                 AND
-            procedure.AirportIdentifier = rwy.AirportIcaoIdentifier
-
+            procedure.LandingFacilityIcaoIdentifier = rwy.LandingFacilityIcaoIdentifier
 
 WHERE
---     procedure.AirportIdentifier LIKE '%NUQ%'
+--     procedure.LandingFacilityIcaoIdentifier LIKE '%NUQ%'
 --         AND
     procedure.FixIdentifier IS NOT NULL
         AND 
@@ -740,3 +803,56 @@ WHERE
 -- ORDER BY
 --     CAST(procedure.SequenceNumber AS real)
 ;
+
+--------------------------------------------------------------------------------
+-- The set of distinct route types and qualifiers
+--  and their more verbose descriptions
+SELECT DISTINCT
+    procedure.RouteType
+    ||  CASE
+            WHEN procedure.ApchRouteQualifier1 = '' THEN '_'
+            ELSE procedure.ApchRouteQualifier1
+        END
+    ||  CASE
+            WHEN procedure.ApchRouteQualifier2 = '' THEN '_'
+            ELSE procedure.ApchRouteQualifier2
+        END
+        AS Qualifiers
+    , route_type.Route_Type_Description
+    , route_qualifier.Qualifier_1_Description
+    , route_qualifier2.Qualifier_2_Description
+    , count(*) as CountOfSteps
+FROM
+    "primary_P_F_base_Airport - Approach Procedures" AS procedure
+LEFT OUTER JOIN
+    "route_types" AS route_type
+        on
+        procedure.SectionCode = route_type.Section
+            and
+        procedure.SubSectionCode = route_type.SubSection
+         and
+        procedure.RouteType = route_type.type_code
+    
+LEFT OUTER JOIN
+    "route_qualifiers" AS route_qualifier
+         on
+       procedure.SectionCode = route_qualifier.Section
+        and
+       procedure.SubSectionCode = route_qualifier.SubSection
+        and
+       procedure.ApchRouteQualifier1 = route_qualifier.qualifier_1
+LEFT OUTER JOIN
+    "route_qualifiers" AS route_qualifier2
+         on
+       procedure.SectionCode = route_qualifier2.Section
+        and
+       procedure.SubSectionCode = route_qualifier2.SubSection
+        and
+         procedure.ApchRouteQualifier2 = route_qualifier2.qualifier_2    
+group by
+    Qualifiers
+order by
+    Qualifiers
+    --, CountOfSteps ASC
+;
+--------------------------------------------------------------------------------

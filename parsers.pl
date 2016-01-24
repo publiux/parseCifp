@@ -49,12 +49,12 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 SubSectionCode:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 BlankSpacing:1
                 VORIdentifier:4
                 BlankSpacing:2
-                ICAOCode:2
+                VorIcaoRegionCode:2
                 ContinuationRecordNumber:1
                 VORFrequency:5
                 NAVAIDClass:5
@@ -78,12 +78,12 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 SubSectionCode:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 BlankSpacing:1
                 NDBIdentifier:4
                 BlankSpacing:2
-                ICAOCode:2
+                NdbIcaoRegionCode:2
                 ContinuationRecordNumber:1
                 NDBFrequency:5
                 NDBClass:5
@@ -99,7 +99,7 @@
                 CycleData:4 
                 ',
       },
-
+       #See pg15(30 of PDF) for clarification on repeated SubSectionCode
       'E' => {
         'A' => '
                 RecordType:1
@@ -107,11 +107,11 @@
                 SectionCode:1
                 SubSectionCode:1
                 RegionCode:4
-                ICAOCode:2
-                Subsection:1
+                IcaoRegionCode:2
+                BlankSubSectionCode:1
                 WaypointIdentifier:5
                 BlankSpacing:1
-                ICAOCode:2
+                WaypointIcaoRegionCode:2
                 ContinuationRecordNumber:1
                 BlankSpacing:4
                 WaypointType:3
@@ -137,7 +137,7 @@
                 BlankSpacing:7
                 MarkerIdentifier:4
                 BlankSpacing:2
-                ICAOCode:2
+                IcaoRegionCode:2
                 ContinuationRecordNumber:1
                 MarkerCode:4
                 ReservedExpansion:1
@@ -162,13 +162,13 @@
             SectionCode:1
             SubSectionCode:1
             RegionCode:4
-            ICAOCode:2
+            IcaoRegionCode:2
             BlankSpacing:15
             DuplicateIdentifier:2
             FixIdentifier:5
-            ICAOCode:2
-            SectionCode:1
-            SubSectionCode:1
+            FixIcaoRegionCode:2
+            FixSectionCode:1
+            FixSubSectionCode:1
             ContinuationRecordNumber:1
             InboundHoldingCourse:4
             TurnDirection:1
@@ -194,9 +194,9 @@
             BlankSpacing:6
             SequenceNumber:4
             FixIdentifier:5
-            ICAOCode:2
-            SectionCode:1
-            Subsection:1
+            FixIcaoRegionCode:2
+            FixSectionCode:1
+            FixSubSectionCode:1
             ContinuationRecordNumber:1
             WaypointDescriptionCode1:1             
             WaypointDescriptionCode2:1         
@@ -208,8 +208,8 @@
             DirectionRestriction:1
             CruiseTableIndicator:2
             EUIndicator:1
-            RecommendedNAVAID:4
-            ICAOCode:2
+            RecommendedNavaid:4
+            RecommendedNavaidIcaoRegionCode:2
             RNP:3
             BlankSpacing:3
             Theta:4
@@ -238,22 +238,22 @@
                 BlankSpacing:9
                 ContinuationRecordNumber:1
                 ToFixIdentifier:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                ToFixIcaoRegionCode:2
+                ToFixSectionCode:1
+                ToFixSubSectionCode:1
                 VIACode:3
                 SIDSTARAWYIdent:6
                 AREACode:3
                 Level:1
                 RouteType:1
                 InitialAirportFix:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                InitialAirportFixIcaoRegionCode:2
+                InitialAirportFixSectionCode:1
+                InitialAirportFixSubSectionCode:1
                 TerminusAirportFix:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                TerminusAirportFixIcaoRegionCode:2
+                TerminusAirportFixSectionCode:1
+                TerminusAirportFixSubSectionCode:1
                 MinimumAltitude:5
                 MaximumAltitude:5
                 TimeCode:1
@@ -276,11 +276,11 @@
                 RestrictionType:2
                 ContinuationRecordNumber:1
                 StartFixIdentifier:5
-                StartFixICAOCode:2
+                StartFixIcaoRegionCode:2
                 StartFixSectionCode:1
                 StartFixSubSectionCode:1
                 EndFixIdentifier:5
-                EndFixICAOCode:2
+                EndFixIcaoRegionCode:2
                 EndFixSectionCode:1
                 EndFixSubSectionCode:1
                 BlankSpacing:1
@@ -338,9 +338,9 @@
                 CommunicationAltitude:5
                 CommunicationAltitude:5
                 RemoteFacility:4
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                RemoteFacilityIcaoRegionCode:2
+                RemoteFacilitySectionCode:1
+                RemoteFacilitySubSectionCode:1
                 ReservedExpansion:12
                 FileRecordNumber:5
                 CycleDate:4
@@ -354,8 +354,8 @@
                             CustomerAreaCode:3
                             SectionCode:1
                             BlankSpacing:1
-                            HeliportIdentifier:4
-                            ICAOCode:2
+                            LandingFacilityIcaoIdentifier:4
+                            LandingFacilityIcaoRegionCode:2
                             SubSectionCode:1
                             ATAIATADesignator:3
                             PADIdentifier:5
@@ -370,7 +370,7 @@
                             HeliportElevation:5
                             SpeedLimit:3
                             RecommendedVHFNavaid:4
-                            ICAOCode:2
+                            RecommendedVHFNavaidIcaoRegionCode:2
                             TransitionAltitude:5
                             TransitionLevel:5
                             PublicMilitaryIndicator:1
@@ -387,12 +387,12 @@
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         WaypointIdentifier:5
                         BlankSpacing:1
-                        ICAOCode:2
+                        WaypointIcaoRegionCode:2
                         ContinuationRecordNumber:1
                         BlankSpacing:4
                         WaypointType:3
@@ -414,8 +414,8 @@
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         SIDSTARAPPIdentifier:6
                         RouteType:1
@@ -423,27 +423,27 @@
                         BlankSpacing:1
                         SequenceNumber:3
                         FixIdentifier:5
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        FixIcaoRegionCode:2
+                        FixSectionCode:1
+                        FixSubSectionCode:1
                         ContinuationRecordNumber:1
                         WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                        WaypointDescriptionCode2:1
+                        WaypointDescriptionCode3:1
+                        WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
                         TurnDirectionValid:1
                         RecommendedNavaid:4
-                        ICAOCode:2
+                        RecommendedNavaidIcaoRegionCode:2
                         ARCRadius:6
                         Theta:4
                         Rho:4
                         MagneticCourse:4
                         RouteDistanceHoldingDistanceOrTime:4
                         RecommendedNavaidSection:1
-                        RecommendedNavaidSubsection:1
+                        RecommendedNavaidSubSection:1
                         ReservedSpacing:2
                         AltitudeDescription:1
                         ATCIndicator:1
@@ -454,9 +454,9 @@
                         VerticalAngle:4
                         CenterFixOrTAAProcedureTurnIndicator:5
                         MultipleCodeOrTAASectorIdentifier:1
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                        CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                         GNSSFMSIndicator:1
                         SpeedLimitDescription:1
                         ApchRouteQualifier1:1
@@ -469,8 +469,8 @@
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         SIDSTARAPPIdentifier:6
                         RouteType:1
@@ -478,27 +478,27 @@
                         BlankSpacing:1
                         SequenceNumber:3
                         FixIdentifier:5
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        FixIcaoRegionCode:2
+                        FixSectionCode:1
+                        FixSubSectionCode:1
                         ContinuationRecordNumber:1
                         WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                        WaypointDescriptionCode2:1
+                        WaypointDescriptionCode3:1
+                        WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
                         TurnDirectionValid:1
                         RecommendedNavaid:4
-                        ICAOCode:2
+                        RecommendedNavaidIcaoRegionCode:2
                         ARCRadius:6
                         Theta:4
                         Rho:4
                         MagneticCourse:4
                         RouteDistanceHoldingDistanceOrTime:4
                         RecommendedNavaidSection:1
-                        RecommendedNavaidSubsection:1
+                        RecommendedNavaidSubSection:1
                         ReservedSpacing:2
                         AltitudeDescription:1
                         ATCIndicator:1
@@ -509,9 +509,9 @@
                         VerticalAngle:4
                         CenterFixOrTAAProcedureTurnIndicator:5
                         MultipleCodeOrTAASectorIdentifier:1
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                        CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                         GNSSFMSIndicator:1
                         SpeedLimitDescription:1
                         ApchRouteQualifier1:1
@@ -524,8 +524,8 @@
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         SIDSTARAPPIdentifier:6
                         RouteType:1
@@ -533,27 +533,27 @@
                         BlankSpacing:1
                         SequenceNumber:3
                         FixIdentifier:5
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        FixIcaoRegionCode:2
+                        FixSectionCode:1
+                        FixSubSectionCode:1
                         ContinuationRecordNumber:1
-                        WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                        WaypointDescriptionCode1:1
+                        WaypointDescriptionCode2:1
+                        WaypointDescriptionCode3:1
+                        WaypointDescriptionCode4:1
                         TurnDirection:1
                         RNP:3
                         PathAndTermination:2
                         TurnDirectionValid:1
                         RecommendedNavaid:4
-                        ICAOCode:2
+                        RecommendedNavaidIcaoRegionCode:2
                         ARCRadius:6
                         Theta:4
                         Rho:4
                         MagneticCourse:4
                         RouteDistanceHoldingDistanceOrTime:4
                         RecommendedNavaidSection:1
-                        RecommendedNavaidSubsection:1
+                        RecommendedNavaidSubSection:1
                         ReservedSpacing:2
                         AltitudeDescription:1
                         ATCIndicator:1
@@ -564,9 +564,9 @@
                         VerticalAngle:4
                         CenterFixOrTAAProcedureTurnIndicator:5
                         MultipleCodeOrTAASectorIdentifier:1
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                        CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                        CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                         GNSSFMSIndicator:1
                         SpeedLimitDescription:1
                         ApchRouteQualifier1:1
@@ -575,22 +575,24 @@
                         FileRecordNumber:5
                         CycleDate:4
                         ',
+        #I believe there's a problem with the definition of this record type at
+        # at column 20 "SectionCode" overlaps with TAASectorIdentifier.  Removed.
+        #See page 41 of ARINC424-18 (pg56 of pdf)                    
         'K' => 'RecordType:1
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         ApproachIdentifier:6
-                        SectionCode:1
                         TAASectorIdentifier:1
                         TAAProcedureTurn:4
                         BlankReserved:5
                         TAAIAFWaypoint:5
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        TAAIAFWaypointIcaoRegionCode:2
+                        TAAIAFWaypointSectionCode:1
+                        TAAIAFWaypointSubSectionCode:1
                         ContinuationRecordNumber:1
                         Reserved:1
                         MagTrueIndicator
@@ -620,13 +622,13 @@
                         CustomerAreaCode:3
                         SectionCode:1
                         BlankSpacing:1
-                        HeliportIdentifier:4
-                        ICAOCode:2
+                        LandingFacilityIcaoIdentifier:4
+                        LandingFacilityIcaoRegionCode:2
                         SubSectionCode:1
                         MSACenter:5
-                        ICAOCode:2
-                        SectionCode:1
-                        SubSectionCode:1
+                        MSACenterIcaoRegionCode:2
+                        MSACenterSectionCode:1
+                        MSACenterSubSectionCode:1
                         MultipleCode:1
                         ReservedExpansion:15
                         ContinuationRecordNumber:1
@@ -661,8 +663,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                HeliportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 CommunicationsType:3
                 CommunicationsFreq:7
@@ -683,15 +685,15 @@
                 CommunicationAltitude:5
                 CommunicationAltitude:5
                 SectorFacility:4
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                SectorFacilityIcaoRegionCode:2
+                SectorFacilitySectionCode:1
+                SectorFacilitySubSectionCode:1
                 DistanceDescription:1
                 CommunicationsDistance:2
                 RemoteFacility:4
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                RemoteFacilityIcaoRegionCode:2
+                RemoteFacilitySectionCode:1
+                RemoteFacilitySubSectionCode:1
                 CallSign:25
                 FileRecordNumber:5
                 CycleDate:4
@@ -704,8 +706,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 ATAIATADesignator:3
                 ReservedExpansion:2
@@ -721,7 +723,7 @@
                 AirportElevation:5
                 SpeedLimit:3
                 RecommendedNavaid:4
-                ICAOCode:2
+                RecommendedNavaidIcaoRegionCode:2
                 TransitionsAltitude:5
                 TransitionLevel:5
                 PublicMilitaryIndicator:1
@@ -739,8 +741,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 GateIdentifier:5
                 BlankSpacing:3
@@ -759,11 +761,11 @@
                 SectionCode:1
                 SubSectionCode:1
                 RegionCode:4
-                ICAOCode:2
-                Subsection:1
+                IcaoRegionCode:2
+                SubSection:1
                 WaypointIdentifier:5
                 BlankSpacing:1
-                ICAOCode:2
+                WaypointIcaoRegionCode:2
                 ContinuationRecordNumber:1
                 BlankSpacing:4
                 WaypointType:3
@@ -785,8 +787,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 SIDSTARApproachIdentifier:6
                 RouteType:1
@@ -794,27 +796,27 @@
                 BlankSpacing:1
                 SequenceNumber:3
                 FixIdentifier:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                FixIcaoRegionCode:2
+                FixSectionCode:1
+                FixSubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode1:1             
-                WaypointDescriptionCode2:1         
-                WaypointDescriptionCode3:1    
+                WaypointDescriptionCode1:1
+                WaypointDescriptionCode2:1
+                WaypointDescriptionCode3:1
                 WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
                 TurnDirectionValid:1
                 RecommendedNavaid:4
-                ICAOCode:2
+                RecommendedNavaidIcaoRegionCode:2
                 ARCRadius:6
                 Theta:4
                 Rho:4
                 MagneticCourse:4
                 RouteDistanceHoldingDistanceOrTime:4
-                RECDNAVSection:1
-                RECDNAVSubsection:1
+                RecommendedNAVAIDSection:1
+                RecommendedNAVAIDSubSection:1
                 Reservedexpansion:2
                 AltitudeDescription:1
                 ATCIndicator:1
@@ -825,9 +827,9 @@
                 VerticalAngle:4
                 CenterFixOrTAAProcedureTurnIndicator:5
                 MultipleCodeOrTAASectorIdentifier:1
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                 GNSSFMSIndication:1
                 SpeedLimitDescription:1
                 ApchRouteQualifier1:1
@@ -840,8 +842,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 SIDSTARApproachIdentifier:6
                 RouteType:1
@@ -849,27 +851,27 @@
                 BlankSpacing:1
                 SequenceNumber:3
                 FixIdentifier:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                FixIcaoRegionCode:2
+                FixSectionCode:1
+                FixSubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                WaypointDescriptionCode1:1
+                WaypointDescriptionCode2:1
+                WaypointDescriptionCode3:1
+                WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
                 TurnDirectionValid:1
                 RecommendedNavaid:4
-                ICAOCode:2
+                RecommendedNavaidIcaoRegionCode:2
                 ARCRadius:6
                 Theta:4
                 Rho:4
                 MagneticCourse:4
                 RouteDistanceHoldingDistanceOrTime:4
-                RECDNAVSection:1
-                RECDNAVSubsection:1
+                RecommendedNavaidSection:1
+                RecommendedNavaidSubSection:1
                 Reservedexpansion:2
                 AltitudeDescription:1
                 ATCIndicator:1
@@ -880,9 +882,9 @@
                 VerticalAngle:4
                 CenterFixOrTAAProcedureTurnIndicator:5
                 MultipleCodeOrTAASectorIdentifier:1
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                 GNSSFMSIndication:1
                 SpeedLimitDescription:1
                 ApchRouteQualifier1:1
@@ -895,8 +897,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 SIDSTARApproachIdentifier:6
                 RouteType:1
@@ -904,27 +906,27 @@
                 BlankSpacing:1
                 SequenceNumber:3
                 FixIdentifier:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                FixIcaoRegionCode:2
+                FixSectionCode:1
+                FixSubSectionCode:1
                 ContinuationRecordNumber:1
-                WaypointDescriptionCode1:1             
-        WaypointDescriptionCode2:1         
-      WaypointDescriptionCode3:1    
-  WaypointDescriptionCode4:1
+                WaypointDescriptionCode1:1
+                WaypointDescriptionCode2:1
+                WaypointDescriptionCode3:1
+                WaypointDescriptionCode4:1
                 TurnDirection:1
                 RNP:3
                 PathAndTermination:2
                 TurnDirectionValid:1
                 RecommendedNavaid:4
-                ICAOCode:2
+                RecommendedNavaidIcaoRegionCode:2
                 ARCRadius:6
                 Theta:4
                 Rho:4
                 MagneticCourse:4
                 RouteDistanceHoldingDistanceOrTime:4
-                RECDNAVSection:1
-                RECDNAVSubsection:1
+                RecommendedNavaidSection:1
+                RecommendedNavaidSubSection:1
                 Reservedexpansion:2
                 AltitudeDescription:1
                 ATCIndicator:1
@@ -935,9 +937,9 @@
                 VerticalAngle:4
                 CenterFixOrTAAProcedureTurnIndicator:5
                 MultipleCodeOrTAASectorIdentifier:1
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorIcaoRegionCode:2
+                CenterFixOrTAAProcedureTurnIndicatorSectionCode:1
+                CenterFixOrTAAProcedureTurnIndicatorSubSectionCode:1
                 GNSSFMSIndication:1
                 SpeedLimitDescription:1
                 ApchRouteQualifier1:1
@@ -950,8 +952,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 RunwayIdentifier:5
                 BlankSpacing:3
@@ -983,8 +985,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 LocalizerIdentifier:4
                 ILSCategory:1
@@ -1006,7 +1008,7 @@
                 GlideSlopeHeightatLandingThreshold:2
                 GlideSlopeElevation:5
                 SupportingFacilityID:4
-                SupportingFacilityICAOCode:2
+                SupportingFacilityIcaoRegionCode:2
                 SupportingFacilitySectionCode:1
                 SupportingFacilitySubSectionCode:1
                 ReservedExpansion:13
@@ -1017,17 +1019,17 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 ApproachIdentifier:6
                 TAASectorIdentifier:1
                 TAAProcedureTurn:4
                 BlankReserved:5
                 TAAIAFWaypoint:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                TAAIAFWaypointIcaoRegionCode:2
+                TAAIAFWaypointSectionCode:1
+                TAAIAFWaypointSubSectionCode:1
                 ContinuationRecordNumber:1
                 Reserved:1
                 MagTrueIndicator
@@ -1057,8 +1059,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 MLSIdentifier:4
                 MLSCategory:1
@@ -1085,7 +1087,7 @@
                 NominalElevationAngle:4
                 MinimumGlidePathAngle:3
                 SupportingFacilityIdentifier:4
-                SupportingFacilityICAOCode:2
+                SupportingFacilityIcaoRegionCode:2
                 SupportingFacilitySectionCode:1
                 SupportingFacilitySubSectionCode:1
                 FileRecordNumber:5
@@ -1095,8 +1097,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 LocalizerIdentifier:4
                 MarkerType:3
@@ -1124,12 +1126,12 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 SubSectionCode:1
-                AirportICAOIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 BlankSpacing:1
                 NDBIdentifier:4
                 BlankSpacing:2
-                ICAOCode:2
+                NdbIcaoRegionCode:2
                 ContinuationRecordNumber:1
                 NDBFrequency:5
                 NDBClass:5
@@ -1148,8 +1150,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 ApproachProcedureIdent:6
                 RunwayOrHelipadIdentifier:5
@@ -1180,29 +1182,29 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 SIDSTARApproachIdentifier:6
                 ProcedureType:1
                 RunwayTransitionIdentifier:5
                 RunwayTransitionFix:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                RunwayTransitionFixIcaoRegionCode:2
+                RunwayTransitionFixSectionCode:1
+                RunwayTransitionFixSubSectionCode:1
                 RunwayTransitionAlongTrack
                 Distance:3
                 CommonSegmentTransitionFix:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                CommonSegmentTransitionFixIcaoRegionCode:2
+                CommonSegmentTransitionFixSectionCode:1
+                CommonSegmentTransitionFixSubSectionCode:1
                 CommonSegmentAlongTrack
                 Distance:3
                 EnrouteTransitionIdentifier:5
                 EnrouteTransitionFix:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                EnrouteTransitionFixIcaoRegionCode:2
+                EnrouteTransitionFixSectionCode:1
+                EnrouteTransitionFixSubSectionCode:1
                 EnrouteTransitionAlongTrack
                 Distance:3
                 SequenceNumber:3
@@ -1231,13 +1233,13 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 MSACenter:5
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                MSACenterIcaoRegionCode:2
+                MSACenterSectionCode:1
+                MSACenterSubSectionCode:1
                 MultipleCode:1
                 ReservedExpansion:15
                 ContinuationRecordNumber:1
@@ -1273,8 +1275,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportorHeliportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 GLSRefPathIdentifier:4
                 GLSCategory:1
@@ -1306,8 +1308,8 @@
                 CustomerAreaCode:3
                 SectionCode:1
                 BlankSpacing:1
-                AirportIdentifier:4
-                ICAOCode:2
+                LandingFacilityIcaoIdentifier:4
+                LandingFacilityIcaoRegionCode:2
                 SubSectionCode:1
                 CommunicationsType:3
                 CommunicationsFreq:7
@@ -1328,15 +1330,15 @@
                 CommunicationAltitude:5
                 CommunicationAltitude:5
                 SectorFacility:4
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                SectorFacilityIcaoRegionCode:2
+                SectorFacilitySectionCode:1
+                SectorFacilitySubSectionCode:1
                 DistanceDescription:1
                 CommunicationsDistance:2
                 RemoteFacility:4
-                ICAOCode:2
-                SectionCode:1
-                SubSectionCode:1
+                RemoteFacilityIcaoRegionCode:2
+                RemoteFacilitySectionCode:1
+                RemoteFacilitySubSectionCode:1
                 CallSign:25
                 FileRecordNumber:5
                 CycleDate:4
@@ -1350,9 +1352,9 @@
                 SectionCode:1
                 SubSectionCode:1
                 AlternateRelatedAirportOrFix:5
-                AlternateRelatedICAOCode:2
-                AlternateRelatedSectionCode:1
-                AlternateRelatedSubSectionCode:1
+                AlternateRelatedAirportOrFixIcaoRegionCode:2
+                AlternateRelatedAirportOrFixSectionCode:1
+                AlternateRelatedAirportOrFixSubSectionCode:1
                 AlternateRecordType:2
                 BlankSpacing:2
                 DistancetoAlternate:3
@@ -1388,7 +1390,7 @@
         'C' => 'RecordType:1
                 BlankSpacing:3
                 SectionCode:1
-                SubsectionCode:1
+                SubSectionCode:1
                 CruiseTableIdentifier:2
                 SequenceNumber:1
                 BlankSpacing:19
@@ -1445,11 +1447,11 @@
             CustomerAreaCode:3
             SectionCode:1
             SubSectionCode:1
-            ICAOCode:2
+            IcaoRegionCode:2
             AirspaceType:1
             AirspaceCenter:5
-            SectionCode:1
-            SubSectionCode:1
+            AirspaceCenterSectionCode:1
+            AirspaceCenterSubSectionCode:1
             AirspaceClassification:1
             ReservedSpacing:2
             MultipleCode:1
@@ -1513,7 +1515,7 @@
             CustomerAreaCode:3
             SectionCode:1
             SubSectionCode:1
-            ICAOCode:2
+            IcaoRegionCode:2
             RestrictiveType:1
             RestrictiveAirspaceDesignation:10
             MultipleCode:1

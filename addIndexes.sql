@@ -20,9 +20,9 @@ DROP INDEX IF EXISTS "primary_P_F_base_Airport - Approach Procedures FixIdentifi
         CREATE INDEX "primary_P_F_base_Airport - Approach Procedures FixIdentifier Index"
 	          ON "primary_P_F_base_Airport - Approach Procedures" (FixIdentifier); 
 	
-DROP INDEX IF EXISTS "primary_P_F_base_Airport - Approach Procedures AirportIdentifier Index";
-        CREATE INDEX "primary_P_F_base_Airport - Approach Procedures AirportIdentifier Index"
-	          ON "primary_P_F_base_Airport - Approach Procedures" (AirportIdentifier);
+DROP INDEX IF EXISTS "primary_P_F_base_Airport - Approach Procedures LandingFacilityIcaoIdentifier Index";
+        CREATE INDEX "primary_P_F_base_Airport - Approach Procedures LandingFacilityIcaoIdentifier Index"
+	          ON "primary_P_F_base_Airport - Approach Procedures" (LandingFacilityIcaoIdentifier);
 
 --------------------------------------------------------------------------------
 --SIDs
@@ -30,9 +30,9 @@ DROP INDEX IF EXISTS "primary_P_D_base_Airport - SIDs FixIdentifier Index";
         CREATE INDEX "primary_P_D_base_Airport - SIDs FixIdentifier Index"
 	          ON "primary_P_D_base_Airport - SIDs" (FixIdentifier); 
 	
-DROP INDEX IF EXISTS "primary_P_D_base_Airport - SIDs AirportIdentifier Index";
-        CREATE INDEX "primary_P_D_base_Airport - SIDs AirportIdentifier Index"
-	          ON "primary_P_D_base_Airport - SIDs" (AirportIdentifier);
+DROP INDEX IF EXISTS "primary_P_D_base_Airport - SIDs LandingFacilityIcaoIdentifier Index";
+        CREATE INDEX "primary_P_D_base_Airport - SIDs LandingFacilityIcaoIdentifier Index"
+	          ON "primary_P_D_base_Airport - SIDs" (LandingFacilityIcaoIdentifier);
 	          
 --------------------------------------------------------------------------------
 --STARS
@@ -40,9 +40,9 @@ DROP INDEX IF EXISTS "primary_P_E_base_Airport - STARs FixIdentifier Index";
         CREATE INDEX "primary_P_E_base_Airport - STARs FixIdentifier Index"
 	          ON "primary_P_E_base_Airport - STARs" (FixIdentifier); 
 	
-DROP INDEX IF EXISTS "primary_P_E_base_Airport - STARs AirportIdentifier Index";
-        CREATE INDEX "primary_P_E_base_Airport - STARs AirportIdentifier Index"
-	          ON "primary_P_E_base_Airport - STARs" (AirportIdentifier);
+DROP INDEX IF EXISTS "primary_P_E_base_Airport - STARs LandingFacilityIcaoIdentifier Index";
+        CREATE INDEX "primary_P_E_base_Airport - STARs LandingFacilityIcaoIdentifier Index"
+	          ON "primary_P_E_base_Airport - STARs" (LandingFacilityIcaoIdentifier);
 	          
 --------------------------------------------------------------------------------
 --Enroute fixes
@@ -66,8 +66,8 @@ DROP INDEX IF EXISTS "primary_P_C_base_Airport - Terminal Waypoints LocationInde
 	
 --------------------------------------------------------------------------------
 --Runways
-DROP INDEX IF EXISTS "primary_P_G_base_Airport - Runways AirportIcaoIdentifier Index";
-        CREATE INDEX "primary_P_G_base_Airport - Runways AirportIcaoIdentifier Index"
-                  ON "primary_P_G_base_Airport - Runways" (AirportIcaoIdentifier);
+DROP INDEX IF EXISTS "primary_P_G_base_Airport - Runways LandingFacilityIcaoIdentifier Index";
+        CREATE INDEX "primary_P_G_base_Airport - Runways LandingFacilityIcaoIdentifier Index"
+                  ON "primary_P_G_base_Airport - Runways" (LandingFacilityIcaoIdentifier);
                   
 VACUUM;

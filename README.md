@@ -1,37 +1,32 @@
-Parse Coded Instrument Flight Procedures (CIFP) raw data from AeroNav/FAA as ARINC424 v18 into SQLite3 database
+Parse freely available Coded Instrument Flight Procedures (CIFP) raw data from AeroNav/FAA as ARINC424 v18 into SQLite3 database
 
-These instructions are based on using Ubuntu 1404
+See how Instrument Procedures (including SIDs and STARs) are actually constructed!
+
+These instructions are based on using Ubuntu 1604
 
 How to get this utility up and running:
 
 	Enable the "universe" repository in "Software & Updates" section of System Settings and update
 
 	Install git
-		sudo apt-get install git
+		sudo apt install git
 
 	Download the repository
 		git clone https://github.com/jlmcgraw/parseCifp.git
 
-	Install the following external programs
-		sqlite3 	(sudo apt-get install sqlite3)
-
-	Install the following CPAN modules
-		DBI 		(sudo apt-get install libdbi-perl)
-		DBD::SQLite3	(sudo apt-get install libdbd-sqlite3-perl) 
-
-	Provide CIFP data from AeroNav (available for purchase online)
-		 FAACIFP18
+        Run ./setup.sh
+                Installs some dependencies and sets up git hooks
+        
+	Download free CIFP data from AeroNav
+                ./freshen_local_cifp.sh or visit http://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/
 		 
 	Requires perl version > 5.010
 
 How to use
-	Unzip the CIFP archive to ./CIFP_YYYYMM (name depends on cycle)
-	    Make sure the "FAACIFP18" file is in this directory
+        Download most recent CIFP manually or via freshen_local_cifp.sh and place the .zip file in project directory
 	    
-	Edit parseCifp.sh
-	    Update the cycle information
-	    
-	./parseCifp.sh
+	./parseCifp.sh <cycle>
+            eg ./parseCifp.sh 1607
 	   
 
 	
@@ -44,7 +39,9 @@ How to use
 	
 
 
-Output is in cifp.db
+Output is in cifp-<cycle>.db
+
+Check out some of the sample queries in "Sample CIFP SQL queries.sql" for ideas on how to get at the data
 
 This software and the data it produces come with no guarantees about accuracy or usefulness whatsoever!  Don't use it when your life may be on the line!
 

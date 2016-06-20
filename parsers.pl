@@ -99,7 +99,8 @@
                 CycleData:4 
                 ',
       },
-       #See pg15(30 of PDF) for clarification on repeated SubSectionCode
+
+      #See pg15(30 of PDF) for clarification on repeated SubSectionCode
       'E' => {
         'A' => '
                 RecordType:1
@@ -575,9 +576,10 @@
                         FileRecordNumber:5
                         CycleDate:4
                         ',
+
         #I believe there's a problem with the definition of this record type at
         # at column 20 "SectionCode" overlaps with TAASectorIdentifier.  Removed.
-        #See page 41 of ARINC424-18 (pg56 of pdf)                    
+        #See page 41 of ARINC424-18 (pg56 of pdf)
         'K' => 'RecordType:1
                         CustomerAreaCode:3
                         SectionCode:1

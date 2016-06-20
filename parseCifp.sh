@@ -16,7 +16,7 @@ cycle="$1"
 datadir=./CIFP_20$cycle/
 
 #Name of the CIFP zip file.  Must be in the current directory
-sourceZip="CIFP_20$cycle.zip"
+sourceZip="cifp_20$cycle.zip"
 
 #Where to save files we create
 outputdir=.

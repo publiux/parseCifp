@@ -83,7 +83,7 @@ SELECT
     ,LandingFacilityIcaoIdentifier
     ,SIDSTARApproachIdentifier
     ,TransitionIdentifier
-    ,SequenceNumber
+    ,CAST( SequenceNumber AS REAL)
     ,RouteType
     ,FixIdentifier
     ,WaypointDescriptionCode1
@@ -91,38 +91,31 @@ SELECT
     ,WaypointDescriptionCode3
     ,WaypointDescriptionCode4
     ,PathAndTermination
-    ,MagneticCourse
-    ,Altitude_1
-    ,Altitude_2
+    ,CAST( MagneticCourse AS REAL) / 10
+    ,CAST( Altitude_1 AS REAL)
+    ,CAST( Altitude_2 AS REAL)
     ,AltitudeDescription
-    ,Rho
+    ,CAST( Rho AS REAL) / 10
     ,RecommendedNavaid
     ,RNP
-    ,RouteDistanceHoldingDistanceOrTime
+    ,CAST( RouteDistanceHoldingDistanceOrTime AS REAL) / 10
     ,VerticalAngle
-    ,Theta
-    ,TransitionAltitude
+    ,CAST (Theta AS REAL) / 10
+    ,CAST( TransitionAltitude AS REAL)
     ,TurnDirection
     ,TurnDirectionValid
     ,SpeedLimit
     ,SpeedLimitDescription
-    ,terminal.WaypointLatitude_WGS84
-    ,terminal.WaypointLongitude_WGS84
 
 FROM
     "primary_P_F_base_Airport - Approach Procedures" AS iap
-JOIN
-    "primary_P_C_base_Airport - Terminal Waypoints" AS terminal
---     "primary_E_A_base_Enroute - Grid Waypoints" AS enroute
-ON
-    iap.FixIdentifier = terminal.waypointIdentifier
---         or
---     iap.FixIdentifier = enroute.waypointIdentifier
-    
 WHERE
-    iap.LandingFacilityIcaoIdentifier LIKE  '%ART%'
+    iap.LandingFacilityIcaoIdentifier LIKE  '%RIC%'
 ORDER BY
-    iap._id
+    SIDSTARApproachIdentifier
+    ,RouteType
+    ,TransitionIdentifier
+    ,CAST( SequenceNumber AS REAL)
     ;
 --------------------------------------------------------------------------------
 ---Minimum Safe Altitudes at an airport, all info

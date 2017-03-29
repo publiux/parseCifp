@@ -519,45 +519,46 @@ SELECT
         || procedure.TransitionIdentifier 
             as unique_id
     , procedure.RouteType
-    , COALESCE( term_fix.waypointLongitude_wgs84
-                ,vhf.vorLongitude_wgs84
-                ,ndb.ndbLongitude_wgs84
-                ,term_ndb.ndbLongitude_wgs84
-                ,grid.waypointLongitude_wgs84
-                ,vhf.dmeLongitude_wgs84
-                ,rwy.RunwayLongitude_wgs84
+    , COALESCE(   term_fix.waypointLongitude_wgs84
+                ,      vhf.vorLongitude_wgs84
+                ,      ndb.ndbLongitude_wgs84
+                , term_ndb.ndbLongitude_wgs84
+                ,     grid.waypointLongitude_wgs84
+                ,      vhf.dmeLongitude_wgs84
+                ,      rwy.RunwayLongitude_wgs84
                 )
                     AS Longitude
-    , COALESCE( term_fix.waypointLatitude_wgs84
-                ,vhf.vorLatitude_wgs84
-                ,ndb.ndbLatitude_wgs84
-                ,term_ndb.ndbLatitude_wgs84
-                ,grid.waypointLatitude_wgs84
-                ,vhf.dmeLatitude_wgs84
-                ,rwy.RunwayLatitude_wgs84
+    , COALESCE(   term_fix.waypointLatitude_wgs84
+                ,      vhf.vorLatitude_wgs84
+                ,      ndb.ndbLatitude_wgs84
+                , term_ndb.ndbLatitude_wgs84
+                ,     grid.waypointLatitude_wgs84
+                ,      vhf.dmeLatitude_wgs84
+                ,      rwy.RunwayLatitude_wgs84
                 )
                     AS Latitude
     , 'linestring ('
         || GROUP_CONCAT(
-                COALESCE(   term_fix.waypointLongitude_wgs84
-                        ,vhf.vorLongitude_wgs84
-                        ,ndb.ndbLongitude_wgs84
-                        ,term_ndb.ndbLongitude_wgs84
-                        ,grid.waypointLongitude_wgs84
-                        ,vhf.dmeLongitude_wgs84
-                        ,rwy.RunwayLongitude_wgs84
+                COALESCE(  term_fix.waypointLongitude_wgs84
+                        ,      vhf.vorLongitude_wgs84
+                        ,      ndb.ndbLongitude_wgs84
+                        , term_ndb.ndbLongitude_wgs84
+                        ,     grid.waypointLongitude_wgs84
+                        ,      vhf.dmeLongitude_wgs84
+                        ,      rwy.RunwayLongitude_wgs84
                         )
             || ' '
-            || COALESCE(   term_fix.waypointLatitude_wgs84
-                        ,vhf.vorLatitude_wgs84
-                        ,ndb.ndbLatitude_wgs84
-                        ,term_ndb.ndbLatitude_wgs84
-                        ,grid.waypointLatitude_wgs84
-                        ,vhf.dmeLatitude_wgs84
-                        ,rwy.RunwayLatitude_wgs84
+            || COALESCE(  term_fix.waypointLatitude_wgs84
+                        ,      vhf.vorLatitude_wgs84
+                        ,      ndb.ndbLatitude_wgs84
+                        , term_ndb.ndbLatitude_wgs84
+                        ,     grid.waypointLatitude_wgs84
+                        ,      vhf.dmeLatitude_wgs84
+                        ,      rwy.RunwayLatitude_wgs84
                         ) 
-            || ' )'
-            )
+            
+            , ' , ' )
+			|| ' )'
         AS
             geometry
 
@@ -680,41 +681,41 @@ SELECT
     , procedure.TransitionAltitude
     , procedure.TurnDirection
     , procedure.TurnDirectionValid
-    , COALESCE( term_fix.waypointLongitude_wgs84
-                ,vhf.vorLongitude_wgs84
-                ,ndb.ndbLongitude_wgs84
-                ,term_ndb.ndbLongitude_wgs84
-                ,grid.waypointLongitude_wgs84
-                ,vhf.dmeLongitude_wgs84
-                ,rwy.RunwayLongitude_wgs84
+    , COALESCE(   term_fix.waypointLongitude_wgs84
+                ,      vhf.vorLongitude_wgs84
+                ,      ndb.ndbLongitude_wgs84
+                , term_ndb.ndbLongitude_wgs84
+                ,     grid.waypointLongitude_wgs84
+                ,      vhf.dmeLongitude_wgs84
+                ,      rwy.RunwayLongitude_wgs84
                 )
                     AS Longitude
-    , COALESCE( term_fix.waypointLatitude_wgs84
-                ,vhf.vorLatitude_wgs84
-                ,ndb.ndbLatitude_wgs84
-                ,term_ndb.ndbLatitude_wgs84
-                ,grid.waypointLatitude_wgs84
-                ,vhf.dmeLatitude_wgs84
-                ,rwy.RunwayLatitude_wgs84
+    , COALESCE(   term_fix.waypointLatitude_wgs84
+                ,      vhf.vorLatitude_wgs84
+                ,      ndb.ndbLatitude_wgs84
+                , term_ndb.ndbLatitude_wgs84
+                ,     grid.waypointLatitude_wgs84
+                ,      vhf.dmeLatitude_wgs84
+                ,      rwy.RunwayLatitude_wgs84
                 )
                     AS Latitude
     , 'point( ' 
-        || COALESCE(    term_fix.waypointLongitude_wgs84
-                ,vhf.vorLongitude_wgs84
-                ,ndb.ndbLongitude_wgs84
-                ,term_ndb.ndbLongitude_wgs84
-                ,grid.waypointLongitude_wgs84
-                ,vhf.dmeLongitude_wgs84
-                ,rwy.RunwayLongitude_wgs84
-                )
+        || COALESCE( term_fix.waypointLongitude_wgs84
+                   ,      vhf.vorLongitude_wgs84
+                   ,      ndb.ndbLongitude_wgs84
+                   , term_ndb.ndbLongitude_wgs84
+                   ,     grid.waypointLongitude_wgs84
+                   ,      vhf.dmeLongitude_wgs84
+                   ,      rwy.RunwayLongitude_wgs84
+                   )
         || ' '
-        || COALESCE(    term_fix.waypointLatitude_wgs84
-                ,vhf.vorLatitude_wgs84
-                ,ndb.ndbLatitude_wgs84
-                ,term_ndb.ndbLatitude_wgs84
-                ,grid.waypointLatitude_wgs84
-                ,vhf.dmeLatitude_wgs84
-                ,rwy.RunwayLatitude_wgs84
+        || COALESCE( term_fix.waypointLatitude_wgs84
+                   ,      vhf.vorLatitude_wgs84
+                   ,      ndb.ndbLatitude_wgs84
+                   , term_ndb.ndbLatitude_wgs84
+                   ,     grid.waypointLatitude_wgs84
+                   ,      vhf.dmeLatitude_wgs84
+                   ,      rwy.RunwayLatitude_wgs84
                 ) 
         || ' )' 
             AS geometry

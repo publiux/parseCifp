@@ -20,7 +20,9 @@ How to get this utility up and running:
 	Requires perl version > 5.010
 
 How to use
+
 	Download free CIFP data from AeroNav
+	
                 ./freshen_local_cifp.sh .
 					or 
 				visit http://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/

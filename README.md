@@ -16,27 +16,22 @@ How to get this utility up and running:
 
         Run ./setup.sh
                 Installs some dependencies and sets up git hooks
-        
-	Download free CIFP data from AeroNav
-                ./freshen_local_cifp.sh or visit http://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/
 		 
 	Requires perl version > 5.010
 
 How to use
-        Download most recent CIFP manually or via freshen_local_cifp.sh and place the .zip file in project directory
+	Download free CIFP data from AeroNav
+                ./freshen_local_cifp.sh .
+					or 
+				visit http://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/cifp/
 	    
-	./parseCifp.sh <cycle>
-            eg ./parseCifp.sh 1607
-	   
-
-	
+	./parseCifp.sh <path to downloaded cifp files>
+            eg ./parseCifp.sh ./www.aeronav.faa.gov/Upload_313-d/cifp/cifp_201704.zip   
 	
 	Usage: ./parseCifp.pl <options> <directory>
 		-v debug
 		-e expand coded text (not implemented yet)
 		-g create spatialite compatible geometry (not implemented yet)
-
-	
 
 
 Output is in cifp-<cycle>.db

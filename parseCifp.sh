@@ -12,7 +12,7 @@ fi
 
 sourceZip="$1"
 
-if [ ! -f $sourceZip ]; then
+if [ ! -f "$sourceZip" ]; then
     echo "$sourceZip doesn't exist" >&2
     echo "please run ./freshen_local_cifp.sh to update local CIFP data files"   >&2
     exit 1
@@ -35,12 +35,12 @@ echo "Unzipping CIFP $cycle files"
 unzip -u -j -q "$sourceZip"  -d "$datadir" > "$cycle-unzip.txt"
 
 # Delete any existing files
-rm -f $outputdir/cifp-$cycle.db
+rm -f $outputdir/cifp-"$cycle".db
 
 echo "Creating the database"
 # Create the sqlite database
-./parseCifp.pl -c$cycle $datadir
+./parseCifp.pl -c"$cycle" "$datadir"
 
 # Add indexes
 echo "Adding indexes"
-sqlite3 $outputdir/cifp-$cycle.db < addIndexes.sql
+sqlite3 $outputdir/cifp-"$cycle".db < addIndexes.sql

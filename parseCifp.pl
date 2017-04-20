@@ -456,7 +456,7 @@ while (<$file>) {
             my $wgs84_coordinate;
 
             #Add this new key name so it will get included during table creation
-            push $parser_names_ref, $coordinateKey . '_WGS84';
+            push @{$parser_names_ref}, $coordinateKey . '_WGS84';
 
             #Make sure at least a placeholder key is present
             $parser2_ref->{ $coordinateKey . '_WGS84' } = '';

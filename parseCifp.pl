@@ -28,6 +28,7 @@ use vars qw/ %opt /;
 #Allow use of locally installed libraries in conjunction with Carton
 use FindBin '$Bin';
 use lib "$FindBin::Bin/local/lib/perl5";
+use lib $FindBin::Bin;
 
 #Non-standard libaries
 use DBI;
@@ -69,27 +70,29 @@ my %parameters = (
     'trim'    => 'true',
 );
 
-#Load the hash defintion of sections in an external file
+# Load the hash defintion of sections from an external file
 my %sections = do 'sections.pl';
 
-#Load the hash defintion from an external file
-#These are parsers for each section/subsection combo we expect to find
-#This is really the meat of the whole program
+# Load the hash definition from an external file
+# These are parsers for each section/subsection combo we expect to find
+# This is really the meat of the whole program
 my %hash_of_parsers = do 'parsers.pl';
 
-#Load the hash defintion from an external file
-#Use these parsers for continuation records
+# Load the hash definition from an external file
+# Use these parsers for continuation records
 my %hash_of_continuation_base_parsers = do 'continuation_base_parsers.pl';
 
-#Load the hash defintion from an external file
-#Use these continuation parsers for SectionCode/SubsectionCodes that have application types
+# Load the hash definition from an external file
+# Use these continuation parsers for SectionCode/SubsectionCodes 
+# that have application types
 my %hash_of_continuation_application_parsers =
   do 'continuation_application_parsers.pl';
 
-#A hash to record SectionCode/SubsectionCode/ApplicationType that we've encountered
+# A hash to record SectionCode/SubsectionCode/ApplicationType that we've encountered
 my %continuationAndApplicationTypes = ();
 
-#A parser for the common information for a record to determine which more specific parser to use
+# A parser for the common information for a record to determine which more 
+# specific parser to use
 my $parser_base = Parse::FixedLength->new(
     [
         qw(
@@ -102,8 +105,8 @@ my $parser_base = Parse::FixedLength->new(
     ]
 );
 
-#For whatever silly reason, subsection codes are in a different place in airport and heliport records
-#So we'll define another parser to get the subsection code for them
+# For whatever silly reason, subsection codes are in a different place in airport and heliport records
+# So we'll define another parser to get the subsection code for them
 my $parser_airportheliport = Parse::FixedLength->new(
     [
         qw(
@@ -119,15 +122,15 @@ my $parser_airportheliport = Parse::FixedLength->new(
     ]
 );
 
-#create/connect to the database
+# Create/connect to the database
 my $dbfile = "./cifp-$cycle.db";
 my $dbh = DBI->connect( "dbi:SQLite:dbname=$dbfile", "", "" );
 
-#Set some parameters to speed INSERTs up at the expense of safety
+# Set some parameters to speed INSERTs up at the expense of safety
 # $dbh->do("PRAGMA page_size=4096");
 $dbh->do("PRAGMA synchronous=OFF");
 
-#Create base tables (obviously just for Android)
+# Create base tables (obviously just for Android)
 my $create_metadata_table  = "CREATE TABLE android_metadata ( locale TEXT );";
 my $insert_metadata_record = "INSERT INTO android_metadata VALUES ( 'en_US' );";
 
@@ -138,19 +141,19 @@ $dbh->do($insert_metadata_record);
 ###Open an SQL transaction...
 $dbh->begin_work();
 
-#Loop over each line of CIFP file
+# Loop over each line of CIFP file
 while (<$file>) {
     my $textOfCurrentLine = $_;
     my $currentLineNumber = $.;
 
-    #Default information about this record
+    # Default information about this record
     my $primary_or_continuation = "primary";
     my $application             = "base";
 
-    #Remove linefeed characters
+    # Remove linefeed characters
     $textOfCurrentLine =~ s/\R//g;
 
-    #Check for mismatch between expected and actual lengths
+    # Check for mismatch between expected and actual lengths
     if ( $parser_base->length != length($textOfCurrentLine) ) {
         die "Line # $currentLineNumber - Bad parse. Expected "
           . $parser_base->length
@@ -161,7 +164,7 @@ while (<$file>) {
     # print "\rLoading # $currentLineNumber...";
     say "Loading # $currentLineNumber..." if ( $currentLineNumber % 1000 == 0 );
 
-    #Start parsing the record
+    # Start parsing the record
     my $parser_ref = $parser_base->parse_newref($textOfCurrentLine);
 
     my $RecordType       = $parser_ref->{RecordType};
@@ -169,13 +172,13 @@ while (<$file>) {
     my $SubSectionCode   = $parser_ref->{SubSectionCode};
     my $CustomerAreaCode = $parser_ref->{CustomerAreaCode};
 
-    #Ignore header records
+    # Ignore header records
     if ( $RecordType eq 'H' ) {
         say "Line # $. : Header record:";
         next;
     }
 
-    #Ignore non-standard records for now
+    # Ignore non-standard records for now
     if ( $RecordType ne 'S' ) {
         say "Line # $. :"
           . "$sections{$SectionCode}{$SubSectionCode}:"
@@ -184,7 +187,7 @@ while (<$file>) {
         next;
     }
 
-    #Is this an airport or heliport record with a blank subsection?
+    # Is this an airport or heliport record with a blank subsection?
     if ( ( $SectionCode =~ m/[PH]/i ) && ( !$SubSectionCode ) ) {
 
         #If yes,  subsection codes are in a different place in airport and heliport records

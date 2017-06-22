@@ -1,5 +1,7 @@
 Parse freely available Coded Instrument Flight Procedures (CIFP) raw data from AeroNav/FAA as ARINC424 v18 into SQLite3 database
 
+See here for an example of the output of this utility: https://www.dropbox.com/s/htex68b9fn4mgso/cifp-1707.db.zip?dl=0
+
 See how Instrument Procedures (including SIDs and STARs) are actually constructed!
 
 These instructions are based on using Ubuntu 1604
